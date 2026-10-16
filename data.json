@@ -1,0 +1,345 @@
+{
+  "users": [
+    {
+      "user_id": 1,
+      "name": "Karan",
+      "email": "karan@campus.edu",
+      "hostel_room": "H2 · Room 316",
+      "created_at": "2026-10-01T10:00:00.000Z"
+    },
+    {
+      "user_id": 2,
+      "name": "Neha",
+      "email": "neha@campus.edu",
+      "hostel_room": "H7 · Room 505",
+      "created_at": "2026-10-02T11:00:00.000Z"
+    },
+    {
+      "user_id": 3,
+      "name": "Rahul",
+      "email": "rahul@campus.edu",
+      "hostel_room": "H4 · Room 210",
+      "created_at": "2026-10-03T12:00:00.000Z"
+    }
+  ],
+  "items": [
+    {
+      "item_id": 8,
+      "seller_id": 2,
+      "title": "mbkj",
+      "category": "Books",
+      "price": 4584,
+      "condition": "Good",
+      "hostel_room": "H7 · Room 505",
+      "details": "kjhkj",
+      "status": "Available",
+      "image_type": "book",
+      "image_url": "/uploads/item-1792136310510-28810.jpg",
+      "created_at": "2026-10-16T07:38:30.525Z"
+    },
+    {
+      "item_id": 7,
+      "seller_id": 2,
+      "title": "grbf",
+      "category": "Hostel Essentials",
+      "price": 52345,
+      "condition": "Brand new",
+      "hostel_room": "H7 · Room 505",
+      "details": "new",
+      "status": "Available",
+      "image_type": "calculator",
+      "image_url": "/uploads/item-1791550364511-815784.png",
+      "created_at": "2026-10-09T12:52:44.540Z"
+    },
+    {
+      "item_id": 1,
+      "seller_id": 1,
+      "title": "Data Structures in C",
+      "category": "Books",
+      "price": 180,
+      "condition": "Good",
+      "hostel_room": "H2 · Room 316",
+      "details": "3rd Edition by Reema Thareja. Useful for 2nd year CS. Clean pages with highlighted key topics.",
+      "status": "Available",
+      "image_type": "book",
+      "image_url": "",
+      "created_at": "2026-10-05T09:00:00.000Z"
+    },
+    {
+      "item_id": 2,
+      "seller_id": 1,
+      "title": "Wired earphones",
+      "category": "Electronics",
+      "price": 120,
+      "condition": "Like new",
+      "hostel_room": "H2 · Room 316",
+      "details": "Boat Bassheads 3.5mm jack with microphone. Crisp sound, only used twice.",
+      "status": "Available",
+      "image_type": "calculator",
+      "image_url": "",
+      "created_at": "2026-10-06T10:30:00.000Z"
+    },
+    {
+      "item_id": 3,
+      "seller_id": 2,
+      "title": "Bucket and mug set",
+      "category": "Hostel Essentials",
+      "price": 60,
+      "condition": "Good",
+      "hostel_room": "H7 · Room 505",
+      "details": "Heavy-duty 20L blue bucket and matching 1L mug. Clean and ready for hostel use.",
+      "status": "Sold",
+      "image_type": "bucket",
+      "image_url": "",
+      "created_at": "2026-10-07T14:15:00.000Z"
+    },
+    {
+      "item_id": 4,
+      "seller_id": 3,
+      "title": "Engineering Drafter kit",
+      "category": "Stationery",
+      "price": 150,
+      "condition": "Good",
+      "hostel_room": "H4 · Room 210",
+      "details": "Omega mini drafter with clamp, scale, and drawing sheet protective carrying tube.",
+      "status": "Available",
+      "image_type": "drafter",
+      "image_url": "",
+      "created_at": "2026-10-08T08:45:00.000Z"
+    },
+    {
+      "item_id": 5,
+      "seller_id": 3,
+      "title": "Electric Kettle (1.2L)",
+      "category": "Hostel Essentials",
+      "price": 320,
+      "condition": "Like new",
+      "hostel_room": "H4 · Room 210",
+      "details": "Stainless steel instant heating kettle with auto cut-off. Great for midnight coffee and noodles.",
+      "status": "Available",
+      "image_type": "kettle",
+      "image_url": "",
+      "created_at": "2026-10-08T15:20:00.000Z"
+    },
+    {
+      "item_id": 6,
+      "seller_id": 2,
+      "title": "White Lab Coat (M)",
+      "category": "Stationery",
+      "price": 130,
+      "condition": "Good",
+      "hostel_room": "H7 · Room 505",
+      "details": "Medium size pure cotton lab coat. Cleaned and pressed, required for chemistry/biology labs.",
+      "status": "Pending",
+      "image_type": "labcoat",
+      "image_url": "/images/labcoat.png",
+      "created_at": "2026-10-09T08:10:00.000Z"
+    }
+  ],
+  "orders": [
+    {
+      "order_id": 6,
+      "buyer_id": 2,
+      "seller_id": 2,
+      "item_id": 6,
+      "item_title": "White Lab Coat (M)",
+      "quantity": 1,
+      "total": 130,
+      "pickup_location": "Hostel Gate 1 (Main Entrance)",
+      "hostel_room": "H7 · Room 505",
+      "payment_method": "UPI",
+      "status": "Pending",
+      "created_at": "2026-10-16T07:37:27.934Z"
+    },
+    {
+      "order_id": 5,
+      "buyer_id": 2,
+      "seller_id": 2,
+      "item_id": 3,
+      "item_title": "Bucket and mug set",
+      "quantity": 4,
+      "total": 240,
+      "pickup_location": "Hostel Gate 1 (Main Entrance)",
+      "hostel_room": "H7 · Room 505",
+      "payment_method": "UPI",
+      "status": "Completed",
+      "created_at": "2026-10-16T07:37:27.934Z"
+    },
+    {
+      "order_id": 4,
+      "buyer_id": 2,
+      "seller_id": 3,
+      "item_id": 4,
+      "item_title": "Engineering Drafter kit",
+      "quantity": 1,
+      "total": 150,
+      "pickup_location": "Hostel Gate 2 (Boys)",
+      "hostel_room": "H7 · Room 505",
+      "payment_method": "Cash",
+      "status": "Cancelled",
+      "created_at": "2026-10-09T12:54:25.175Z"
+    },
+    {
+      "order_id": 3,
+      "buyer_id": 2,
+      "seller_id": 2,
+      "item_id": 3,
+      "item_title": "Bucket and mug set",
+      "quantity": 4,
+      "total": 240,
+      "pickup_location": "Hostel Gate 2 (Boys)",
+      "hostel_room": "H7 · Room 505",
+      "payment_method": "UPI",
+      "status": "Completed",
+      "created_at": "2026-10-09T12:53:50.801Z"
+    },
+    {
+      "order_id": 2,
+      "buyer_id": 2,
+      "seller_id": 1,
+      "item_id": 1,
+      "item_title": "Data Structures in C",
+      "quantity": 1,
+      "total": 180,
+      "pickup_location": "Hostel Gate 2",
+      "hostel_room": "H7 � Room 505",
+      "payment_method": "Cash",
+      "status": "Cancelled",
+      "created_at": "2026-10-09T12:14:34.971Z"
+    },
+    {
+      "order_id": 1,
+      "buyer_id": 2,
+      "seller_id": 1,
+      "item_id": 1,
+      "item_title": "Data Structures in C",
+      "quantity": 1,
+      "total": 180,
+      "pickup_location": "Hostel Gate 2",
+      "hostel_room": "H7 · Room 505",
+      "payment_method": "Cash",
+      "status": "Cancelled",
+      "created_at": "2026-10-09T10:00:00.000Z"
+    }
+  ],
+  "messages": [
+    {
+      "message_id": 1,
+      "item_id": 1,
+      "sender_id": 2,
+      "receiver_id": 1,
+      "message_text": "Hi, is the Data Structures in C still available?",
+      "timestamp": "2026-10-09T09:15:00.000Z"
+    },
+    {
+      "message_id": 2,
+      "item_id": 1,
+      "sender_id": 1,
+      "receiver_id": 2,
+      "message_text": "Yes, it is still available. Can we meet at the hostel gate?",
+      "timestamp": "2026-10-09T09:16:30.000Z"
+    },
+    {
+      "message_id": 3,
+      "item_id": 1,
+      "sender_id": 2,
+      "receiver_id": 1,
+      "message_text": "What is the edition of this book",
+      "timestamp": "2026-10-09T09:18:00.000Z"
+    },
+    {
+      "message_id": 4,
+      "item_id": 1,
+      "sender_id": 1,
+      "receiver_id": 2,
+      "message_text": "It is the 3rd edition by Reema Thareja! No missing pages, very clean.",
+      "timestamp": "2026-10-09T09:19:15.000Z"
+    },
+    {
+      "message_id": 5,
+      "item_id": 1,
+      "sender_id": 2,
+      "receiver_id": 1,
+      "message_text": "Can we meet at 5 PM at Hostel Gate 2?",
+      "timestamp": "2026-10-09T12:14:34.957Z"
+    },
+    {
+      "message_id": 6,
+      "item_id": 1,
+      "sender_id": 2,
+      "receiver_id": 1,
+      "message_text": "hii'",
+      "timestamp": "2026-10-09T12:53:02.037Z"
+    },
+    {
+      "message_id": 7,
+      "item_id": 7,
+      "sender_id": 2,
+      "receiver_id": 2,
+      "message_text": "hello",
+      "timestamp": "2026-10-09T12:53:18.458Z"
+    },
+    {
+      "message_id": 8,
+      "item_id": 7,
+      "sender_id": 2,
+      "receiver_id": 2,
+      "message_text": "Can we meet at the hostel gate?",
+      "timestamp": "2026-10-09T12:53:21.208Z"
+    },
+    {
+      "message_id": 9,
+      "item_id": 7,
+      "sender_id": 2,
+      "receiver_id": 2,
+      "message_text": "What is the edition and condition?",
+      "timestamp": "2026-10-09T12:53:22.776Z"
+    },
+    {
+      "message_id": 10,
+      "item_id": 7,
+      "sender_id": 2,
+      "receiver_id": 2,
+      "message_text": "Hi, is this still available?",
+      "timestamp": "2026-10-09T12:53:23.976Z"
+    },
+    {
+      "message_id": 11,
+      "item_id": 7,
+      "sender_id": 2,
+      "receiver_id": 2,
+      "message_text": "Can you do ₹20 discount?",
+      "timestamp": "2026-10-09T12:53:25.057Z"
+    },
+    {
+      "message_id": 12,
+      "item_id": 5,
+      "sender_id": 2,
+      "receiver_id": 3,
+      "message_text": "Can we meet at the hostel gate?",
+      "timestamp": "2026-10-09T20:54:36.707Z"
+    },
+    {
+      "message_id": 13,
+      "item_id": 6,
+      "sender_id": 2,
+      "receiver_id": 2,
+      "message_text": "is it availabkle",
+      "timestamp": "2026-10-16T07:37:45.087Z"
+    },
+    {
+      "message_id": 14,
+      "item_id": 6,
+      "sender_id": 2,
+      "receiver_id": 2,
+      "message_text": "Can we meet at the hostel gate?",
+      "timestamp": "2026-10-16T07:37:47.188Z"
+    }
+  ],
+  "counters": {
+    "user_id": 4,
+    "item_id": 9,
+    "order_id": 7,
+    "message_id": 15
+  }
+}
