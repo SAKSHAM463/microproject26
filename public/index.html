@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MitShop - Campus Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="MitShop – campus peer-to-peer marketplace for students to buy, sell and chat about items.">
+  <meta name="theme-color" content="#F4F3FB" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0D0C20" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="style.css?v=6">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <h1 class="brand-logo" onclick="switchTab('buy')">MitShop</h1>
+      </div>
+      <div class="header-right">
+        <!-- Quick Student Switcher -->
+        <div class="user-pill-dropdown" id="user-dropdown-toggle" onclick="toggleUserDropdown()" title="Switch student profile">
+          <span class="user-avatar-badge" id="header-user-avatar">N</span>
+          <span class="user-name-text" id="header-user-name">Neha (H7)</span>
+          <span class="dropdown-chevron">▾</span>
+          <div class="user-dropdown-menu" id="user-dropdown-menu">
+            <div class="dropdown-header">Switch Student Profile</div>
+            <div class="dropdown-item" onclick="setCurrentUser(2); event.stopPropagation();">
+              <span class="avatar-sm avatar-orange">N</span>
+              <div class="user-meta">
+                <strong>Neha (Buyer)</strong>
+                <small>H7 · Room 505</small>
+              </div>
+            </div>
+            <div class="dropdown-item" onclick="setCurrentUser(1); event.stopPropagation();">
+              <span class="avatar-sm avatar-karan">K</span>
+              <div class="user-meta">
+                <strong>Karan (Seller)</strong>
+                <small>H2 · Room 316</small>
+              </div>
+            </div>
+            <div class="dropdown-item" onclick="setCurrentUser(3); event.stopPropagation();">
+              <span class="avatar-sm avatar-rahul">R</span>
+              <div class="user-meta">
+                <strong>Rahul (Student)</strong>
+                <small>H4 · Room 210</small>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item action-item" onclick="openLoginModal(); event.stopPropagation();">
+              ➕ Add / Login Student
+            </div>
+          </div>
+        </div>
+
+        <!-- Dark/Light Mode Toggle -->
+        <button class="icon-btn theme-toggle-btn" id="theme-btn" onclick="toggleDarkMode()" title="Toggle Dark Mode" aria-label="Toggle theme">
+          <span id="theme-icon">🌙</span>
+        </button>
+
+        <!-- Cart Button -->
+        <button class="icon-btn cart-toggle-btn" id="cart-btn" onclick="openCart()" title="View Cart" aria-label="Open cart">
+          <svg class="cart-svg-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count-badge" id="cart-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Campus Notice Banner -->
+    <div class="campus-announcement-banner">
+      <span class="announcement-text">Free delivery on orders above ₹30. Collect from the hostel gate.</span>
+    </div>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="nav-segmented-tabs">
+      <button class="nav-tab active" id="tab-buy" onclick="switchTab('buy')">
+        <span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span><span class="tab-label">Buy</span>
+      </button>
+      <button class="nav-tab" id="tab-sell" onclick="switchTab('sell')">
+        <span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1"/></svg></span><span class="tab-label">Sell</span>
+      </button>
+      <button class="nav-tab" id="tab-chat" onclick="switchTab('chat')">
+        <span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"/></svg></span><span class="tab-label">Chat</span>
+        <span class="chat-unread-dot" id="chat-unread-indicator"></span>
+      </button>
+      <button class="nav-tab" id="tab-orders" onclick="switchTab('orders')">
+        <span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg></span><span class="tab-label">Orders</span>
+      </button>
+    </nav>
+
+    <!-- MAIN VIEW AREA -->
+    <main class="main-content">
+
+      <!-- ================= 1. BUY FEED VIEW ================= -->
+      <section id="view-buy" class="view-panel active">
+        <!-- Search and Filter Bar -->
+        <div class="search-bar-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="catalog-search" placeholder="Search textbooks, calculators, drafters..." oninput="handleSearch(this.value)">
+          <button class="clear-search-btn" id="clear-search" onclick="clearSearch()" style="display:none">✕</button>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="category-pills-scroll" id="category-pills">
+          <button class="cat-pill active" onclick="filterCategory('All')">All</button>
+          <button class="cat-pill" onclick="filterCategory('Books')">Books</button>
+          <button class="cat-pill" onclick="filterCategory('Electronics')">Electronics</button>
+          <button class="cat-pill" onclick="filterCategory('Hostel Essentials')">Hostel Essentials</button>
+          <button class="cat-pill" onclick="filterCategory('Stationery')">Stationery & Tools</button>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div class="catalog-grid" id="catalog-grid">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-catalog" style="display:none">
+          <div class="empty-icon">🔍</div>
+          <h3>No items found</h3>
+          <p>Try searching for something else or sell the first item!</p>
+          <button class="btn btn-primary" onclick="switchTab('sell')">Post a Listing</button>
+        </div>
+      </section>
+
+      <!-- ================= 2. SELL FORM VIEW ================= -->
+      <section id="view-sell" class="view-panel">
+        <div class="sell-container">
+          <div class="sell-header">
+            <h2>Sell an item</h2>
+            <p class="sell-subtitle">Your listing shows up in Buy right away.</p>
+          </div>
+
+          <form id="sell-form" onsubmit="handleSellSubmit(event)" class="sell-form-card">
+            <div class="form-group">
+              <label for="item-name">Item name</label>
+              <input type="text" id="item-name" name="title" placeholder="e.g. Drafter kit" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-half">
+                <label for="item-category">Category</label>
+                <select id="item-category" name="category" required>
+                  <option value="Books">Books</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Hostel Essentials">Hostel Essentials</option>
+                  <option value="Stationery">Stationery</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group col-half">
+                <label for="item-price">Price (₹)</label>
+                <input type="number" id="item-price" name="price" placeholder="150" min="0" step="1" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-half">
+                <label for="item-condition">Condition</label>
+                <select id="item-condition" name="condition" required>
+                  <option value="Good" selected>Good</option>
+                  <option value="Like new">Like new</option>
+                  <option value="Brand new">Brand new</option>
+                  <option value="Fair">Fair</option>
+                </select>
+              </div>
+
+              <div class="form-group col-half">
+                <label for="item-hostel">Hostel and room</label>
+                <input type="text" id="item-hostel" name="hostel_room" placeholder="H7 · Room 505" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="item-details">Details</label>
+              <textarea id="item-details" name="details" rows="3" placeholder="Edition, age, anything the buyer should know"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Select Item Visual</label>
+              <div class="preset-visual-picker">
+                <label class="visual-option">
+                  <input type="radio" name="image_type" value="book" checked>
+                  <span class="visual-box">📚 Book</span>
+                </label>
+                <label class="visual-option">
+                  <input type="radio" name="image_type" value="calculator">
+                  <span class="visual-box">🖩 Device</span>
+                </label>
+                <label class="visual-option">
+                  <input type="radio" name="image_type" value="drafter">
+                  <span class="visual-box">📐 Drafter</span>
+                </label>
+                <label class="visual-option">
+                  <input type="radio" name="image_type" value="kettle">
+                  <span class="visual-box">🫖 Kettle</span>
+                </label>
+                <label class="visual-option">
+                  <input type="radio" name="image_type" value="bucket">
+                  <span class="visual-box">🪣 Bucket</span>
+                </label>
+                <label class="visual-option">
+                  <input type="radio" name="image_type" value="labcoat">
+                  <span class="visual-box">🥼 Lab Coat</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="item-photo">Or Upload Photo (Optional)</label>
+              <input type="file" id="item-photo" name="photo" accept="image/*" class="file-input">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-listing-btn">
+              Post Listing
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ================= 3. ITEM-LINKED CHAT VIEW ================= -->
+      <section id="view-chat" class="view-panel">
+        <div class="chat-container">
+
+          <!-- Active Conversations Selector -->
+          <div class="chat-threads-bar" id="chat-threads-bar">
+            <!-- Active thread pills -->
+          </div>
+
+          <!-- Chat Header with Participant Avatars -->
+          <div class="chat-header-bar">
+            <div class="chat-participants">
+              <div class="participant-pill participant-active">
+                <span class="avatar-circle avatar-orange" id="chat-buyer-avatar">N</span>
+                <span class="participant-name" id="chat-buyer-name">Neha</span>
+              </div>
+              <div class="participant-pill">
+                <span class="avatar-circle avatar-karan" id="chat-seller-avatar">K</span>
+                <span class="participant-name" id="chat-seller-name">Karan</span>
+              </div>
+            </div>
+            <button class="chat-switch-party-btn" onclick="switchChatPerspective()" title="Reply as other person">
+              ⇄ Switch Speaker
+            </button>
+          </div>
+
+          <!-- Item Context Banner -->
+          <div class="chat-item-context" id="chat-context-banner">
+            <span class="context-label" id="chat-item-title">About: Data Structures in C · ₹180</span>
+            <button class="btn-link" onclick="viewChatProduct()">View Item</button>
+          </div>
+
+          <!-- Quick Suggestion Chips -->
+          <div class="chat-chips-scroll">
+            <button class="chip-btn" onclick="sendQuickChip('Hi, is this still available?')">Is it available?</button>
+            <button class="chip-btn" onclick="sendQuickChip('Can we meet at the hostel gate?')">Meet at hostel gate?</button>
+            <button class="chip-btn" onclick="sendQuickChip('What is the edition and condition?')">What edition?</button>
+            <button class="chip-btn" onclick="sendQuickChip('Can you do ₹20 discount?')">Any discount?</button>
+          </div>
+
+          <!-- Messages Stream -->
+          <div class="chat-messages-stream" id="chat-messages-container">
+            <!-- Bubble thread inserted here -->
+          </div>
+
+          <!-- Chat Input Bar -->
+          <form class="chat-input-bar" onsubmit="handleSendChat(event)">
+            <input type="text" id="chat-input" placeholder="Type a message" autocomplete="off" required>
+            <button type="submit" class="btn-chat-send" id="chat-send-btn">Send</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ================= 4. ORDERS & TRACKING VIEW ================= -->
+      <section id="view-orders" class="view-panel">
+        <div class="orders-container">
+          <div class="orders-header">
+            <h2>Campus Orders</h2>
+            <p class="orders-subtitle">Track pickup requests and handoffs at hostel gates.</p>
+          </div>
+
+          <div class="orders-list" id="orders-list">
+            <!-- Orders dynamically rendered -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================= CART DRAWER / MODAL ================= -->
+    <div class="cart-backdrop" id="cart-drawer-backdrop" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cart-drawer">
+      <div class="cart-drawer-header">
+        <h2>Your cart</h2>
+        <button class="close-modal-btn" onclick="closeCart()" aria-label="Close cart">✕</button>
+      </div>
+
+      <div class="cart-drawer-body">
+        <div class="cart-items-list" id="cart-items-container">
+          <!-- Items inserted here -->
+        </div>
+
+        <div class="cart-summary-section" id="cart-summary-section">
+          <div class="cart-total-row">
+            <span class="total-label">Total</span>
+            <span class="total-amount" id="cart-total-amount">₹0</span>
+          </div>
+
+          <div class="free-delivery-badge" id="free-delivery-pill">
+            <span class="pill-dot">✓</span> Free delivery applied
+          </div>
+
+          <div class="checkout-input-group">
+            <label for="checkout-hostel-room">Hostel and room</label>
+            <input type="text" id="checkout-hostel-room" value="H7 · Room 505" placeholder="e.g. H7 · Room 505" required>
+          </div>
+
+          <div class="checkout-input-group">
+            <label for="checkout-pickup-gate">Meetup / Gate Pickup Location</label>
+            <select id="checkout-pickup-gate">
+              <option value="Hostel Gate 2 (Boys)" selected>Hostel Gate 2 (Boys)</option>
+              <option value="Hostel Gate 1 (Main Entrance)">Hostel Gate 1 (Main Entrance)</option>
+              <option value="Hostel Gate 7 (Girls Block)">Hostel Gate 7 (Girls Block)</option>
+              <option value="College Cafeteria Gate">College Cafeteria Gate</option>
+            </select>
+          </div>
+
+          <div class="checkout-input-group">
+            <label>Payment Method</label>
+            <div class="payment-method-selector">
+              <label class="payment-radio">
+                <input type="radio" name="payment_method" value="Cash" checked>
+                <span>💵 Cash on Meetup</span>
+              </label>
+              <label class="payment-radio">
+                <input type="radio" name="payment_method" value="UPI">
+                <span>📱 UPI / QR</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-block btn-lg place-order-btn" onclick="handlePlaceOrder()">
+            Place order
+          </button>
+        </div>
+
+        <div class="empty-cart-state" id="empty-cart-view" style="display:none">
+          <div class="empty-icon">🛒</div>
+          <p>Your cart is empty.</p>
+          <button class="btn btn-primary" onclick="closeCart(); switchTab('buy');">Browse Items</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= AUTH / LOGIN MODAL ================= -->
+    <div class="modal-backdrop" id="auth-modal" style="display:none" onclick="closeLoginModal()">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3>Student Campus Login</h3>
+          <button class="close-modal-btn" onclick="closeLoginModal()">✕</button>
+        </div>
+        <form onsubmit="handleAuthSubmit(event)">
+          <div class="form-group">
+            <label for="auth-name">Your Full Name</label>
+            <input type="text" id="auth-name" placeholder="e.g. Priya Sharma" required>
+          </div>
+          <div class="form-group">
+            <label for="auth-email">College Domain Email</label>
+            <input type="email" id="auth-email" placeholder="e.g. priya@campus.edu" required>
+            <small class="helper-text">Verified campus student access</small>
+          </div>
+          <div class="form-group">
+            <label for="auth-hostel">Hostel & Room</label>
+            <input type="text" id="auth-hostel" placeholder="e.g. H5 · Room 204" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block btn-lg">Continue to MitShop</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Notification Popup -->
+    <div class="toast-popup" id="toast-popup"></div>
+
+  </div>
+
+  <script src="app.js?v=6"></script>
+</body>
+</html>
