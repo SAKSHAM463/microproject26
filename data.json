@@ -88,7 +88,7 @@
       "condition": "Good",
       "hostel_room": "H7 · Room 505",
       "details": "Heavy-duty 20L blue bucket and matching 1L mug. Clean and ready for hostel use.",
-      "status": "Sold",
+      "status": "Pending",
       "image_type": "bucket",
       "image_url": "",
       "created_at": "2026-10-07T14:15:00.000Z"
@@ -130,13 +130,41 @@
       "condition": "Good",
       "hostel_room": "H7 · Room 505",
       "details": "Medium size pure cotton lab coat. Cleaned and pressed, required for chemistry/biology labs.",
-      "status": "Pending",
+      "status": "Sold",
       "image_type": "labcoat",
       "image_url": "/images/labcoat.png",
       "created_at": "2026-10-09T08:10:00.000Z"
     }
   ],
   "orders": [
+    {
+      "order_id": 8,
+      "buyer_id": 2,
+      "seller_id": 2,
+      "item_id": 6,
+      "item_title": "White Lab Coat (M)",
+      "quantity": 1,
+      "total": 130,
+      "pickup_location": "Hostel Gate 2 (Boys)",
+      "hostel_room": "H7 · Room 505",
+      "payment_method": "Cash",
+      "status": "Completed",
+      "created_at": "2026-10-20T20:14:49.150Z"
+    },
+    {
+      "order_id": 7,
+      "buyer_id": 2,
+      "seller_id": 2,
+      "item_id": 3,
+      "item_title": "Bucket and mug set",
+      "quantity": 4,
+      "total": 240,
+      "pickup_location": "Hostel Gate 2 (Boys)",
+      "hostel_room": "H7 · Room 505",
+      "payment_method": "Cash",
+      "status": "Pending",
+      "created_at": "2026-10-20T20:14:49.150Z"
+    },
     {
       "order_id": 6,
       "buyer_id": 2,
@@ -334,12 +362,28 @@
       "receiver_id": 2,
       "message_text": "Can we meet at the hostel gate?",
       "timestamp": "2026-10-16T07:37:47.188Z"
+    },
+    {
+      "message_id": 15,
+      "item_id": 1,
+      "sender_id": 2,
+      "receiver_id": 1,
+      "message_text": "What is the edition and condition?",
+      "timestamp": "2026-10-20T20:14:57.829Z"
+    },
+    {
+      "message_id": 16,
+      "item_id": 1,
+      "sender_id": 2,
+      "receiver_id": 1,
+      "message_text": "Can you do ₹20 discount?",
+      "timestamp": "2026-10-20T20:15:00.510Z"
     }
   ],
   "counters": {
     "user_id": 4,
     "item_id": 9,
-    "order_id": 7,
-    "message_id": 15
+    "order_id": 9,
+    "message_id": 17
   }
 }
