@@ -1,6 +1,12 @@
 {
   "users": [
     {
+      "google_sub": null,
+      "picture": "",
+      "phone": null,
+      "is_admin": false,
+      "is_blocked": false,
+      "last_login": null,
       "user_id": 1,
       "name": "Karan",
       "email": "karan@campus.edu",
@@ -8,6 +14,12 @@
       "created_at": "2026-10-01T10:00:00.000Z"
     },
     {
+      "google_sub": null,
+      "picture": "",
+      "phone": null,
+      "is_admin": false,
+      "is_blocked": false,
+      "last_login": null,
       "user_id": 2,
       "name": "Neha",
       "email": "neha@campus.edu",
@@ -15,14 +27,141 @@
       "created_at": "2026-10-02T11:00:00.000Z"
     },
     {
+      "google_sub": null,
+      "picture": "",
+      "phone": null,
+      "is_admin": false,
+      "is_blocked": false,
+      "last_login": null,
       "user_id": 3,
       "name": "Rahul",
       "email": "rahul@campus.edu",
       "hostel_room": "H4 · Room 210",
       "created_at": "2026-10-03T12:00:00.000Z"
+    },
+    {
+      "google_sub": "sub-user-a",
+      "picture": "",
+      "phone": "9876543210",
+      "is_admin": false,
+      "is_blocked": false,
+      "last_login": "2026-10-21T13:04:30.499Z",
+      "user_id": 4,
+      "name": "User A",
+      "email": "usera@mitsgwl.ac.in",
+      "hostel_room": "H1 · Room 101",
+      "created_at": "2026-10-21T12:03:39.616Z"
+    },
+    {
+      "google_sub": "sub-user-b",
+      "picture": "",
+      "phone": null,
+      "is_admin": false,
+      "is_blocked": false,
+      "last_login": "2026-10-21T13:04:30.508Z",
+      "user_id": 5,
+      "name": "User B",
+      "email": "userb@mitsgwl.ac.in",
+      "hostel_room": "",
+      "created_at": "2026-10-21T12:03:39.625Z"
+    },
+    {
+      "google_sub": "sub-admin",
+      "picture": "",
+      "phone": null,
+      "is_admin": false,
+      "is_blocked": false,
+      "last_login": "2026-10-21T13:04:30.518Z",
+      "user_id": 6,
+      "name": "College Admin",
+      "email": "admin@mitsgwl.ac.in",
+      "hostel_room": "",
+      "created_at": "2026-10-21T12:03:39.637Z"
+    },
+    {
+      "google_sub": "sub-user-c",
+      "picture": "",
+      "phone": null,
+      "is_admin": false,
+      "is_blocked": false,
+      "last_login": "2026-10-21T13:04:30.784Z",
+      "user_id": 7,
+      "name": "User C",
+      "email": "userc@mitsgwl.ac.in",
+      "hostel_room": "",
+      "created_at": "2026-10-21T12:03:40.098Z"
+    },
+    {
+      "google_sub": "dev-26cb1sa58@mitsgwl.ac.in",
+      "picture": "",
+      "phone": null,
+      "is_admin": false,
+      "is_blocked": false,
+      "last_login": "2026-10-21T13:00:56.438Z",
+      "user_id": 8,
+      "name": "26cb1sa58",
+      "email": "26cb1sa58@mitsgwl.ac.in",
+      "hostel_room": "",
+      "created_at": "2026-10-21T13:00:50.197Z"
     }
   ],
   "items": [
+    {
+      "item_id": 12,
+      "seller_id": 4,
+      "title": "User A Scientific Calculator",
+      "category": "Electronics",
+      "price": 350,
+      "condition": "Good",
+      "hostel_room": "H1 · Room 101",
+      "details": "Casio fx-991EX",
+      "status": "Sold",
+      "image_type": "default",
+      "image_url": "",
+      "created_at": "2026-10-21T13:04:30.713Z"
+    },
+    {
+      "item_id": 11,
+      "seller_id": 4,
+      "title": "User A Scientific Calculator",
+      "category": "Electronics",
+      "price": 350,
+      "condition": "Good",
+      "hostel_room": "H1 · Room 101",
+      "details": "Casio fx-991EX",
+      "status": "Sold",
+      "image_type": "default",
+      "image_url": "",
+      "created_at": "2026-10-21T13:01:03.465Z"
+    },
+    {
+      "item_id": 10,
+      "seller_id": 4,
+      "title": "User A Scientific Calculator",
+      "category": "Electronics",
+      "price": 350,
+      "condition": "Good",
+      "hostel_room": "H1 · Room 101",
+      "details": "Casio fx-991EX",
+      "status": "Sold",
+      "image_type": "default",
+      "image_url": "",
+      "created_at": "2026-10-21T12:04:20.848Z"
+    },
+    {
+      "item_id": 9,
+      "seller_id": 4,
+      "title": "User A Scientific Calculator",
+      "category": "Electronics",
+      "price": 350,
+      "condition": "Good",
+      "hostel_room": "H1 · Room 101",
+      "details": "Casio fx-991EX",
+      "status": "Sold",
+      "image_type": "default",
+      "image_url": "",
+      "created_at": "2026-10-21T12:03:40.021Z"
+    },
     {
       "item_id": 8,
       "seller_id": 2,
@@ -138,6 +277,62 @@
   ],
   "orders": [
     {
+      "order_id": 12,
+      "buyer_id": 5,
+      "seller_id": 4,
+      "item_id": 12,
+      "item_title": "User A Scientific Calculator",
+      "quantity": 2,
+      "total": 700,
+      "pickup_location": "Hostel Gate 2 (Boys)",
+      "hostel_room": "",
+      "payment_method": "Cash",
+      "status": "Completed",
+      "created_at": "2026-10-21T13:04:30.767Z"
+    },
+    {
+      "order_id": 11,
+      "buyer_id": 5,
+      "seller_id": 4,
+      "item_id": 11,
+      "item_title": "User A Scientific Calculator",
+      "quantity": 2,
+      "total": 700,
+      "pickup_location": "Hostel Gate 2 (Boys)",
+      "hostel_room": "",
+      "payment_method": "Cash",
+      "status": "Completed",
+      "created_at": "2026-10-21T13:01:03.519Z"
+    },
+    {
+      "order_id": 10,
+      "buyer_id": 5,
+      "seller_id": 4,
+      "item_id": 10,
+      "item_title": "User A Scientific Calculator",
+      "quantity": 2,
+      "total": 700,
+      "pickup_location": "Hostel Gate 2 (Boys)",
+      "hostel_room": "",
+      "payment_method": "Cash",
+      "status": "Completed",
+      "created_at": "2026-10-21T12:04:20.909Z"
+    },
+    {
+      "order_id": 9,
+      "buyer_id": 5,
+      "seller_id": 4,
+      "item_id": 9,
+      "item_title": "User A Scientific Calculator",
+      "quantity": 2,
+      "total": 700,
+      "pickup_location": "Hostel Gate 2 (Boys)",
+      "hostel_room": "",
+      "payment_method": "Cash",
+      "status": "Completed",
+      "created_at": "2026-10-21T12:03:40.084Z"
+    },
+    {
       "order_id": 8,
       "buyer_id": 2,
       "seller_id": 2,
@@ -252,6 +447,7 @@
   ],
   "messages": [
     {
+      "read_at": null,
       "message_id": 1,
       "item_id": 1,
       "sender_id": 2,
@@ -260,6 +456,7 @@
       "timestamp": "2026-10-09T09:15:00.000Z"
     },
     {
+      "read_at": null,
       "message_id": 2,
       "item_id": 1,
       "sender_id": 1,
@@ -268,6 +465,7 @@
       "timestamp": "2026-10-09T09:16:30.000Z"
     },
     {
+      "read_at": null,
       "message_id": 3,
       "item_id": 1,
       "sender_id": 2,
@@ -276,6 +474,7 @@
       "timestamp": "2026-10-09T09:18:00.000Z"
     },
     {
+      "read_at": null,
       "message_id": 4,
       "item_id": 1,
       "sender_id": 1,
@@ -284,6 +483,7 @@
       "timestamp": "2026-10-09T09:19:15.000Z"
     },
     {
+      "read_at": null,
       "message_id": 5,
       "item_id": 1,
       "sender_id": 2,
@@ -292,6 +492,7 @@
       "timestamp": "2026-10-09T12:14:34.957Z"
     },
     {
+      "read_at": null,
       "message_id": 6,
       "item_id": 1,
       "sender_id": 2,
@@ -300,6 +501,7 @@
       "timestamp": "2026-10-09T12:53:02.037Z"
     },
     {
+      "read_at": null,
       "message_id": 7,
       "item_id": 7,
       "sender_id": 2,
@@ -308,6 +510,7 @@
       "timestamp": "2026-10-09T12:53:18.458Z"
     },
     {
+      "read_at": null,
       "message_id": 8,
       "item_id": 7,
       "sender_id": 2,
@@ -316,6 +519,7 @@
       "timestamp": "2026-10-09T12:53:21.208Z"
     },
     {
+      "read_at": null,
       "message_id": 9,
       "item_id": 7,
       "sender_id": 2,
@@ -324,6 +528,7 @@
       "timestamp": "2026-10-09T12:53:22.776Z"
     },
     {
+      "read_at": null,
       "message_id": 10,
       "item_id": 7,
       "sender_id": 2,
@@ -332,6 +537,7 @@
       "timestamp": "2026-10-09T12:53:23.976Z"
     },
     {
+      "read_at": null,
       "message_id": 11,
       "item_id": 7,
       "sender_id": 2,
@@ -340,6 +546,7 @@
       "timestamp": "2026-10-09T12:53:25.057Z"
     },
     {
+      "read_at": null,
       "message_id": 12,
       "item_id": 5,
       "sender_id": 2,
@@ -348,6 +555,7 @@
       "timestamp": "2026-10-09T20:54:36.707Z"
     },
     {
+      "read_at": null,
       "message_id": 13,
       "item_id": 6,
       "sender_id": 2,
@@ -356,6 +564,7 @@
       "timestamp": "2026-10-16T07:37:45.087Z"
     },
     {
+      "read_at": null,
       "message_id": 14,
       "item_id": 6,
       "sender_id": 2,
@@ -364,6 +573,7 @@
       "timestamp": "2026-10-16T07:37:47.188Z"
     },
     {
+      "read_at": null,
       "message_id": 15,
       "item_id": 1,
       "sender_id": 2,
@@ -372,6 +582,7 @@
       "timestamp": "2026-10-20T20:14:57.829Z"
     },
     {
+      "read_at": null,
       "message_id": 16,
       "item_id": 1,
       "sender_id": 2,
@@ -381,9 +592,10 @@
     }
   ],
   "counters": {
-    "user_id": 4,
-    "item_id": 9,
-    "order_id": 9,
+    "user_id": 9,
+    "item_id": 13,
+    "order_id": 13,
     "message_id": 17
-  }
+  },
+  "wishlist": []
 }
