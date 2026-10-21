@@ -6,19 +6,19 @@
   <title>MitShop Admin Dashboard</title>
   <style>
     :root {
-      --primary: #1a73e8;
-      --primary-hover: #1557b0;
-      --bg: #f8f9fa;
+      --primary: #4B35F5;
+      --primary-hover: #3B27D8;
+      --bg: #F4F3FB;
       --surface: #ffffff;
-      --text: #202124;
-      --text-muted: #5f6368;
-      --border: #dadce0;
-      --green-bg: #e6f4ea;
-      --green-text: #137333;
-      --yellow-bg: #fef7e0;
-      --yellow-text: #b06000;
-      --orange-bg: #feefe3;
-      --orange-text: #c5221f;
+      --text: #15133D;
+      --text-muted: #625F85;
+      --border: #E0DDF0;
+      --green-bg: #DDF6E8;
+      --green-text: #12804A;
+      --yellow-bg: #FFF0C2;
+      --yellow-text: #8A5A00;
+      --red-bg: #FFE1E3;
+      --red-text: #C62E3B;
       --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
@@ -29,7 +29,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -37,7 +37,6 @@
       flex-direction: column;
     }
 
-    /* Login View */
     #loginView {
       min-height: 100vh;
       display: flex;
@@ -48,11 +47,11 @@
 
     .login-card {
       background: var(--surface);
-      border-radius: 12px;
+      border-radius: 16px;
       box-shadow: var(--shadow);
       padding: 40px 32px;
       width: 100%;
-      max-width: 380px;
+      max-width: 420px;
       text-align: center;
       border: 1px solid var(--border);
     }
@@ -67,246 +66,197 @@
       font-size: 14px;
       color: var(--text-muted);
       margin-bottom: 24px;
-    }
-
-    .input-group {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 6px;
-      color: var(--text);
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 10px 14px;
-      font-size: 15px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .input-group input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+      line-height: 1.5;
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: 500;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      transition: background-color 0.2s, opacity 0.2s;
-    }
-
-    .btn-primary {
+      width: 100%;
+      padding: 12px;
       background-color: var(--primary);
       color: #fff;
-      width: 100%;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.2s;
     }
 
-    .btn-primary:hover {
+    .btn:hover {
       background-color: var(--primary-hover);
     }
 
-    .login-error {
-      margin-top: 14px;
-      color: #d93025;
-      font-size: 13px;
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      margin-top: 10px;
+    }
+
+    .error-msg {
+      background-color: var(--red-bg);
+      color: var(--red-text);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 16px;
       display: none;
     }
 
-    /* Dashboard View */
+    /* Dashboard */
     #dashboardView {
       display: none;
       flex-direction: column;
       flex: 1;
     }
 
-    header {
+    .navbar {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 16px 24px;
+      padding: 14px 24px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .header-left {
-      display: flex;
       align-items: center;
-      gap: 16px;
     }
 
-    .logo {
+    .navbar h1 {
       font-size: 20px;
-      font-weight: 700;
       color: var(--primary);
     }
 
-    .pending-pill {
-      background: var(--yellow-bg);
-      color: var(--yellow-text);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 20px;
+    .nav-actions {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 12px;
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-sm {
-      padding: 7px 12px;
+    .admin-pill {
       font-size: 13px;
-      background: #fff;
+      color: var(--text-muted);
+      background: var(--bg);
+      padding: 6px 12px;
+      border-radius: 999px;
       border: 1px solid var(--border);
-      color: var(--text);
+    }
+
+    .btn-logout {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
       border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
     }
 
-    .btn-sm:hover {
-      background: #f1f3f4;
+    .btn-logout:hover {
+      color: var(--red-text);
+      border-color: var(--red-text);
     }
 
-    .content-area {
+    .main-content {
       padding: 24px;
-      max-width: 1440px;
+      max-width: 1300px;
       margin: 0 auto;
       width: 100%;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
       flex: 1;
     }
 
-    .table-card {
-      background: var(--surface);
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      overflow: hidden;
+    .stat-card h3 {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
     }
 
-    .table-container {
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .orders-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .orders-card-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-responsive {
       overflow-x: auto;
-      max-height: calc(100vh - 170px);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 14px;
       text-align: left;
-      font-size: 13px;
-      min-width: 950px;
     }
 
-    thead th {
-      position: sticky;
-      top: 0;
-      background: var(--primary);
-      color: #ffffff;
-      padding: 12px 14px;
+    th {
+      background: var(--bg);
+      color: var(--text-muted);
       font-weight: 600;
-      white-space: nowrap;
-      z-index: 10;
-      letter-spacing: 0.3px;
-    }
-
-    tbody tr {
-      border-bottom: 1px solid #edf0f2;
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #fbfcfe;
-    }
-
-    tbody tr:hover {
-      background-color: #f0f6ff;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
     }
 
     td {
-      padding: 12px 14px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
       vertical-align: middle;
-      color: var(--text);
     }
 
-    .col-id {
-      font-weight: 600;
-      color: var(--primary);
-      width: 50px;
-    }
-
-    .col-time {
-      color: var(--text-muted);
-      white-space: nowrap;
-      font-size: 12px;
-    }
-
-    .col-user {
-      font-weight: 500;
-    }
-
-    .item-list {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      max-width: 280px;
-    }
-
-    .item-row {
-      line-height: 1.35;
-      font-size: 12.5px;
+    tr:hover td {
+      background: #faf9fd;
     }
 
     .badge {
       display: inline-block;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 11.5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
     }
 
-    .badge-paid {
-      background: var(--green-bg);
-      color: var(--green-text);
-    }
-
-    .badge-payment-pending {
+    .badge-pending {
       background: var(--yellow-bg);
       color: var(--yellow-text);
     }
 
-    .badge-fulfilled {
+    .badge-completed {
       background: var(--green-bg);
       color: var(--green-text);
-      text-transform: capitalize;
     }
 
-    .badge-pending {
-      background: var(--orange-bg);
-      color: var(--orange-text);
-      text-transform: capitalize;
+    .badge-cancelled {
+      background: var(--red-bg);
+      color: var(--red-text);
     }
 
     .btn-action {
@@ -314,85 +264,73 @@
       color: #fff;
       border: none;
       padding: 6px 12px;
-      border-radius: 5px;
+      border-radius: 6px;
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      white-space: nowrap;
-      transition: background-color 0.15s;
     }
 
     .btn-action:hover {
       background: var(--primary-hover);
     }
-
-    .btn-action:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .completed-text {
-      color: var(--text-muted);
-      font-size: 12px;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      color: var(--text-muted);
-      font-size: 14px;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Login Form -->
+  <!-- Access Check / Login View -->
   <div id="loginView">
     <div class="login-card">
-      <h1>MitShop Admin</h1>
-      <p>Enter administrator password to continue</p>
-      <form id="loginForm" onsubmit="handleLogin(event)">
-        <div class="input-group">
-          <label for="passwordInput">Password</label>
-          <input type="password" id="passwordInput" placeholder="Enter password" required autofocus>
-        </div>
-        <button type="submit" class="btn btn-primary" id="loginBtn">Login</button>
-        <div class="login-error" id="loginError">Incorrect password or server error.</div>
-      </form>
+      <h1>🛡 MitShop Admin</h1>
+      <p id="loginNotice">Checking administrative session...</p>
+      <div id="loginError" class="error-msg"></div>
+      <a href="/" class="btn" id="loginActionBtn" style="display:none">Sign In on MitShop</a>
+      <a href="/" class="btn btn-secondary">Return to Store</a>
     </div>
   </div>
 
-  <!-- Admin Dashboard -->
+  <!-- Dashboard View -->
   <div id="dashboardView">
-    <header>
-      <div class="header-left">
-        <span class="logo">MitShop Admin</span>
-        <div class="pending-pill" id="pendingPill">
-          <span>Pending Orders:</span>
-          <strong id="pendingCount">0</strong>
-        </div>
-      </div>
-      <div class="header-actions">
-        <span id="lastUpdated" style="font-size: 12px; color: var(--text-muted);"></span>
-        <button class="btn-sm" onclick="fetchOrders(false)">Refresh</button>
-        <button class="btn-sm" onclick="handleLogout()">Logout</button>
+    <header class="navbar">
+      <h1>MitShop Admin Dashboard</h1>
+      <div class="nav-actions">
+        <span class="admin-pill" id="adminUserPill">Admin</span>
+        <button class="btn-logout" onclick="handleLogout()">Sign Out</button>
       </div>
     </header>
 
-    <div class="content-area">
-      <div class="table-card">
-        <div class="table-container">
+    <main class="main-content">
+      <div class="stats-row">
+        <div class="stat-card">
+          <h3>Total Orders</h3>
+          <div class="value" id="totalOrdersCount">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Pending Pickup</h3>
+          <div class="value" id="pendingOrdersCount" style="color:var(--yellow-text)">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Completed</h3>
+          <div class="value" id="completedOrdersCount" style="color:var(--green-text)">0</div>
+        </div>
+      </div>
+
+      <div class="orders-card">
+        <div class="orders-card-header">
+          <h2>Campus Marketplace Orders</h2>
+          <span id="lastUpdated" style="font-size:13px;color:var(--text-muted)"></span>
+        </div>
+        <div class="table-responsive">
           <table>
             <thead>
               <tr>
-                <th>#</th>
+                <th>Order #</th>
                 <th>Time</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Room</th>
-                <th>Location</th>
-                <th>Items</th>
-                <th>Total (₹)</th>
+                <th>Item</th>
+                <th>Buyer</th>
+                <th>Seller</th>
+                <th>Pickup Gate</th>
+                <th>Hostel/Room</th>
+                <th>Total</th>
                 <th>Payment</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -400,21 +338,20 @@
             </thead>
             <tbody id="ordersTableBody">
               <tr>
-                <td colspan="11" class="empty-state">Loading orders...</td>
+                <td colspan="11" style="text-align:center;padding:24px;color:var(--text-muted)">Loading orders...</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 
   <script>
-    let adminPass = '';
     let autoRefreshTimer = null;
 
     function escapeHtml(str) {
-      if (str === null || str === undefined) return '';
+      if (!str) return '';
       return String(str)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -423,217 +360,125 @@
         .replace(/'/g, '&#039;');
     }
 
-    function formatTime(val) {
-      if (!val) return '-';
-      const d = new Date(val);
-      if (isNaN(d.getTime())) return escapeHtml(String(val));
-      return d.toLocaleDateString('en-IN', {
-        day: '2-digit',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      });
-    }
-
-    function parseItems(data) {
-      if (!data) return '<span class="completed-text">-</span>';
-      let items = [];
-      if (typeof data === 'string') {
-        try {
-          items = JSON.parse(data);
-        } catch (e) {
-          return `<div class="item-row">${escapeHtml(data)}</div>`;
-        }
-      } else if (Array.isArray(data)) {
-        items = data;
-      }
-
-      if (!Array.isArray(items) || items.length === 0) {
-        return '<span class="completed-text">-</span>';
-      }
-
-      return '<div class="item-list">' + items.map(item => {
-        const name = item.name || item.title || 'Item';
-        const variant = item.variant || item.size || '';
-        const qty = item.qty ?? item.quantity ?? 1;
-        const text = variant ? `${name} - ${variant} × ${qty}` : `${name} × ${qty}`;
-        return `<div class="item-row">${escapeHtml(text)}</div>`;
-      }).join('') + '</div>';
-    }
-
-    function getPaymentBadge(order) {
-      const method = (order.payment || order.payment_method || 'cash').toUpperCase();
-      const status = (order.payment_status || 'pending').toLowerCase();
-      const isPaid = status === 'paid' || order.paid === true;
-      const badgeClass = isPaid ? 'badge-paid' : 'badge-payment-pending';
-      return `<span class="badge ${badgeClass}">${escapeHtml(method)}: ${isPaid ? 'PAID' : 'PENDING'}</span>`;
-    }
-
-    function isOrderFulfilled(order) {
-      const status = (order.status || '').toLowerCase();
-      return status === 'fulfilled' || order.fulfilled === true || order.is_fulfilled === 1;
-    }
-
-    async function handleLogin(e) {
-      e.preventDefault();
-      const passInput = document.getElementById('passwordInput');
+    async function checkAdminAuth() {
       const errBox = document.getElementById('loginError');
-      const btn = document.getElementById('loginBtn');
-
-      adminPass = passInput.value.trim();
-      if (!adminPass) return;
-
-      btn.disabled = true;
-      errBox.style.display = 'none';
+      const notice = document.getElementById('loginNotice');
+      const actionBtn = document.getElementById('loginActionBtn');
 
       try {
-        const success = await fetchOrders(false);
-        if (success) {
-          document.getElementById('loginView').style.display = 'none';
-          document.getElementById('dashboardView').style.display = 'flex';
-          startAutoRefresh();
-        } else {
-          errBox.style.display = 'block';
+        const res = await fetch('/api/auth/me', { credentials: 'include' });
+        if (!res.ok) {
+          notice.textContent = 'Admin access requires a signed-in college account listed in ADMIN_EMAILS.';
+          actionBtn.style.display = 'block';
+          return;
         }
+
+        const user = await res.json();
+        if (!user.is_admin) {
+          notice.textContent = `Signed in as ${user.email}, but this account is not an authorized administrator.`;
+          errBox.textContent = '403 Forbidden: Administrator credentials required.';
+          errBox.style.display = 'block';
+          actionBtn.style.display = 'block';
+          return;
+        }
+
+        // Authorized admin!
+        document.getElementById('adminUserPill').textContent = `Admin: ${user.name} (${user.email})`;
+        document.getElementById('loginView').style.display = 'none';
+        document.getElementById('dashboardView').style.display = 'flex';
+
+        fetchOrders();
+        startAutoRefresh();
       } catch (err) {
-        errBox.textContent = err.message || 'Login failed';
+        notice.textContent = 'Failed to verify session.';
+        errBox.textContent = err.message;
         errBox.style.display = 'block';
-      } finally {
-        btn.disabled = false;
       }
     }
 
-    function handleLogout() {
-      adminPass = '';
-      if (autoRefreshTimer) clearInterval(autoRefreshTimer);
-      document.getElementById('dashboardView').style.display = 'none';
-      document.getElementById('loginView').style.display = 'flex';
-      document.getElementById('passwordInput').value = '';
-    }
-
-    async function fetchOrders(isSilent = false) {
-      if (!adminPass) return false;
+    async function fetchOrders() {
       try {
-        const res = await fetch(`/api/admin/orders?password=${encodeURIComponent(adminPass)}`);
-        if (!res.ok) {
-          if (!isSilent && res.status === 401) {
-            alert('Invalid credentials');
-          }
-          return false;
-        }
+        const res = await fetch('/api/admin/orders', { credentials: 'include' });
+        if (!res.ok) throw new Error('Failed to fetch admin orders');
 
-        const data = await res.json();
-        const orders = Array.isArray(data) ? data : (data.orders || []);
+        const orders = await res.json();
         renderOrders(orders);
         document.getElementById('lastUpdated').textContent = `Updated: ${new Date().toLocaleTimeString()}`;
-        return true;
       } catch (err) {
-        console.error('Fetch error:', err);
-        if (!isSilent) throw err;
-        return false;
+        console.error('Error fetching admin orders:', err);
       }
     }
 
     function renderOrders(orders) {
       const tbody = document.getElementById('ordersTableBody');
-      let pendingCount = 0;
-
       if (!orders || orders.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No orders found.</td></tr>';
-        document.getElementById('pendingCount').textContent = '0';
+        tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:24px;color:var(--text-muted)">No orders found.</td></tr>';
         return;
       }
 
-      let rowsHtml = '';
-      orders.forEach((order, index) => {
-        const fulfilled = isOrderFulfilled(order);
-        if (!fulfilled) pendingCount++;
+      let pending = 0;
+      let completed = 0;
 
-        const id = order.id ?? order._id ?? (index + 1);
-        const time = formatTime(order.time || order.created_at || order.createdAt);
-        const name = escapeHtml(order.name || order.customer_name || '-');
-        const phone = escapeHtml(order.phone || order.phone_number || '-');
-        const room = escapeHtml(order.room || order.room_no || '-');
-        const location = escapeHtml(order.location || order.hostel || '-');
-        const items = parseItems(order.items);
-        const total = Number(order.total || order.amount || 0).toFixed(2);
-        const payment = getPaymentBadge(order);
-        const isPaid = (order.payment_status || '').toLowerCase() === 'paid';
+      tbody.innerHTML = orders.map(o => {
+        if (o.status === 'Pending') pending++;
+        if (o.status === 'Completed') completed++;
 
-        const statusBadge = fulfilled
-          ? '<span class="badge badge-fulfilled">Fulfilled</span>'
-          : '<span class="badge badge-pending">Pending</span>';
+        const statusCls = `badge-${o.status.toLowerCase()}`;
+        const timeStr = o.created_at ? new Date(o.created_at).toLocaleString() : '-';
 
-        let actionHtml = '';
-        if (!isPaid && (order.payment_method || '').toLowerCase() === 'upi') {
-          actionHtml += `<button class="btn-action" style="background:#2e7d32;margin-bottom:4px" onclick="markOrderPaid('${escapeHtml(String(id))}')">Mark Paid</button> `;
-        }
-        if (fulfilled) {
-          actionHtml += '<span class="completed-text">Done</span>';
-        } else {
-          actionHtml += `<button class="btn-action" onclick="fulfillOrder('${escapeHtml(String(id))}')">Mark Done</button>`;
+        let actionHtml = '-';
+        if (o.status === 'Pending') {
+          actionHtml = `<button class="btn-action" onclick="fulfillOrder(${o.order_id})">✓ Fulfill</button>`;
         }
 
-        rowsHtml += `
+        return `
           <tr>
-            <td class="col-id">#${escapeHtml(String(id))}</td>
-            <td class="col-time">${time}</td>
-            <td class="col-user">${name}</td>
-            <td>${phone}</td>
-            <td>${room}</td>
-            <td>${location}</td>
-            <td>${items}</td>
-            <td><strong>₹${total}</strong></td>
-            <td>${payment}</td>
-            <td>${statusBadge}</td>
+            <td><strong>#${o.order_id}</strong></td>
+            <td style="font-size:12px;color:var(--text-muted)">${timeStr}</td>
+            <td><strong>${escapeHtml(o.item_title)}</strong> (×${o.quantity || 1})</td>
+            <td>${escapeHtml(o.buyer_name)}</td>
+            <td>${escapeHtml(o.seller_name)}</td>
+            <td>${escapeHtml(o.pickup_location)}</td>
+            <td>${escapeHtml(o.hostel_room)}</td>
+            <td><strong>₹${o.total}</strong></td>
+            <td>${escapeHtml(o.payment_method)}</td>
+            <td><span class="badge ${statusCls}">${o.status}</span></td>
             <td>${actionHtml}</td>
           </tr>
         `;
-      });
+      }).join('');
 
-      tbody.innerHTML = rowsHtml;
-      document.getElementById('pendingCount').textContent = pendingCount;
+      document.getElementById('totalOrdersCount').textContent = orders.length;
+      document.getElementById('pendingOrdersCount').textContent = pending;
+      document.getElementById('completedOrdersCount').textContent = completed;
     }
 
-    async function markOrderPaid(id) {
-      if (!id || !adminPass) return;
+    async function fulfillOrder(orderId) {
       try {
-        const res = await fetch(`/api/admin/orders/${encodeURIComponent(id)}/pay?password=${encodeURIComponent(adminPass)}`, {
-          method: 'POST'
+        const res = await fetch(`/api/admin/orders/${orderId}/fulfill`, {
+          method: 'POST',
+          credentials: 'include'
         });
-        if (!res.ok) {
-          const msg = await res.text();
-          throw new Error(msg || 'Failed to mark order as paid');
-        }
-        await fetchOrders(true);
+        if (!res.ok) throw new Error('Fulfill action failed');
+        fetchOrders();
       } catch (err) {
-        alert('Error: ' + err.message);
+        alert(err.message);
       }
     }
 
-    async function fulfillOrder(id) {
-      if (!id || !adminPass) return;
+    async function handleLogout() {
       try {
-        const res = await fetch(`/api/admin/orders/${encodeURIComponent(id)}/fulfill?password=${encodeURIComponent(adminPass)}`, {
-          method: 'POST'
-        });
-        if (!res.ok) {
-          const msg = await res.text();
-          throw new Error(msg || 'Failed to fulfill order');
-        }
-        await fetchOrders(true);
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
+        await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+      } catch {}
+      window.location.href = '/';
     }
 
     function startAutoRefresh() {
       if (autoRefreshTimer) clearInterval(autoRefreshTimer);
-      autoRefreshTimer = setInterval(() => {
-        fetchOrders(true);
-      }, 30000);
+      autoRefreshTimer = setInterval(fetchOrders, 30000);
     }
+
+    document.addEventListener('DOMContentLoaded', checkAdminAuth);
   </script>
 </body>
 </html>

@@ -11,6 +11,7 @@
   <meta name="theme-color" content="#F4F3FB" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0D0C20" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="style.css?v=6">
+  <script src="https://accounts.google.com/gsi/client" async defer onload="if(window.onGoogleLibraryLoad) window.onGoogleLibraryLoad()"></script>
 </head>
 <body class="dark-mode">
   <script>
@@ -27,38 +28,13 @@
         <h1 class="brand-logo" onclick="switchTab('buy')">MitShop</h1>
       </div>
       <div class="header-right">
-        <!-- Quick Student Switcher -->
-        <div class="user-pill-dropdown" id="user-dropdown-toggle" onclick="toggleUserDropdown()" title="Switch student profile">
-          <span class="user-avatar-badge" id="header-user-avatar">N</span>
-          <span class="user-name-text" id="header-user-name">Neha (H7)</span>
+        <!-- Student Profile Menu -->
+        <div class="user-pill-dropdown" id="user-dropdown-toggle" onclick="handleProfilePillClick(event)" title="Student profile">
+          <span class="user-avatar-badge" id="header-user-avatar">?</span>
+          <span class="user-name-text" id="header-user-name">Sign in</span>
           <span class="dropdown-chevron">▾</span>
-          <div class="user-dropdown-menu" id="user-dropdown-menu">
-            <div class="dropdown-header">Switch Student Profile</div>
-            <div class="dropdown-item" onclick="setCurrentUser(2); event.stopPropagation();">
-              <span class="avatar-sm avatar-orange">N</span>
-              <div class="user-meta">
-                <strong>Neha (Buyer)</strong>
-                <small>H7 · Room 505</small>
-              </div>
-            </div>
-            <div class="dropdown-item" onclick="setCurrentUser(1); event.stopPropagation();">
-              <span class="avatar-sm avatar-karan">K</span>
-              <div class="user-meta">
-                <strong>Karan (Seller)</strong>
-                <small>H2 · Room 316</small>
-              </div>
-            </div>
-            <div class="dropdown-item" onclick="setCurrentUser(3); event.stopPropagation();">
-              <span class="avatar-sm avatar-rahul">R</span>
-              <div class="user-meta">
-                <strong>Rahul (Student)</strong>
-                <small>H4 · Room 210</small>
-              </div>
-            </div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item action-item" onclick="openLoginModal(); event.stopPropagation();">
-              ➕ Add / Login Student
-            </div>
+          <div class="user-dropdown-menu" id="user-dropdown-menu" onclick="event.stopPropagation()">
+            <!-- Dynamically populated by app.js -->
           </div>
         </div>
 
@@ -225,7 +201,7 @@
 
             <div class="form-group">
               <label for="item-photo">Or Upload Photo (Optional)</label>
-              <input type="file" id="item-photo" name="photo" accept="image/*" class="file-input">
+              <input type="file" id="item-photo" name="photo" accept="image/jpeg,image/png,image/webp" class="file-input">
             </div>
 
             <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-listing-btn">
@@ -248,22 +224,22 @@
           <div class="chat-header-bar">
             <div class="chat-participants">
               <div class="participant-pill participant-active">
-                <span class="avatar-circle avatar-orange" id="chat-buyer-avatar">N</span>
-                <span class="participant-name" id="chat-buyer-name">Neha</span>
+                <span class="avatar-circle avatar-orange" id="chat-buyer-avatar">B</span>
+                <span class="participant-name" id="chat-buyer-name">Buyer</span>
               </div>
               <div class="participant-pill">
-                <span class="avatar-circle avatar-karan" id="chat-seller-avatar">K</span>
-                <span class="participant-name" id="chat-seller-name">Karan</span>
+                <span class="avatar-circle avatar-karan" id="chat-seller-avatar">S</span>
+                <span class="participant-name" id="chat-seller-name">Seller</span>
               </div>
             </div>
-            <button class="chat-switch-party-btn" onclick="switchChatPerspective()" title="Reply as other person">
+            <button class="chat-switch-party-btn" onclick="switchChatPerspective()" title="Reply as other person" style="display:none">
               ⇄ Switch Speaker
             </button>
           </div>
 
           <!-- Item Context Banner -->
           <div class="chat-item-context" id="chat-context-banner">
-            <span class="context-label" id="chat-item-title">About: Data Structures in C · ₹180</span>
+            <span class="context-label" id="chat-item-title">About: Campus Item</span>
             <button class="btn-link" onclick="viewChatProduct()">View Item</button>
           </div>
 
@@ -329,7 +305,7 @@
 
           <div class="checkout-input-group">
             <label for="checkout-hostel-room">Hostel and room</label>
-            <input type="text" id="checkout-hostel-room" value="H7 · Room 505" placeholder="e.g. H7 · Room 505" required>
+            <input type="text" id="checkout-hostel-room" placeholder="e.g. H7 · Room 505" required>
           </div>
 
           <div class="checkout-input-group">
@@ -376,22 +352,44 @@
           <h3>Student Campus Login</h3>
           <button class="close-modal-btn" onclick="closeLoginModal()">✕</button>
         </div>
-        <form onsubmit="handleAuthSubmit(event)">
-          <div class="form-group">
-            <label for="auth-name">Your Full Name</label>
-            <input type="text" id="auth-name" placeholder="e.g. Priya Sharma" required>
+        <div class="auth-modal-content">
+          <p style="margin-bottom:16px;color:var(--muted);font-size:.92rem;line-height:1.4;">
+            Sign in with your verified <strong>@mitsgwl.ac.in</strong> college Google account to buy, sell, chat, and place orders.
+          </p>
+          <div id="google-signin-btn" style="display:flex;justify-content:center;min-height:44px;margin-bottom:12px;"></div>
+          <small class="helper-text" id="google-auth-status" style="display:block;text-align:center;margin-bottom:12px;">Access restricted to university accounts</small>
+
+          <!-- Local Developer Fast Login (visible in development mode) -->
+          <div id="dev-login-box" style="display:none;border-top:1px dashed var(--line);padding-top:14px;margin-top:6px;">
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;text-align:center;">
+              <strong>Developer Fast Test Sign-In:</strong>
+            </p>
+            <div style="display:flex;gap:8px;">
+              <input type="email" id="dev-login-email" placeholder="e.g. 26cb1sa58@mitsgwl.ac.in" style="flex:1;padding:8px 12px;font-size:0.85rem;" />
+              <button class="btn btn-primary" onclick="handleDevLogin()" style="padding:8px 14px;font-size:0.85rem;">Sign In</button>
+            </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step to collect hostel if missing after first login -->
+    <div class="modal-backdrop" id="hostel-prompt-modal" style="display:none" onclick="closeHostelPrompt()">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3>Hostel Details</h3>
+          <button class="close-modal-btn" onclick="closeHostelPrompt()">✕</button>
+        </div>
+        <div class="auth-modal-content">
+          <p style="margin-bottom:16px;color:var(--muted);font-size:.9rem;">
+            Welcome! Enter your hostel block and room number so fellow students can coordinate gate handoffs.
+          </p>
           <div class="form-group">
-            <label for="auth-email">College Domain Email</label>
-            <input type="email" id="auth-email" placeholder="e.g. priya@campus.edu" required>
-            <small class="helper-text">Verified campus student access</small>
+            <label for="hostel-prompt-input">Hostel & Room</label>
+            <input type="text" id="hostel-prompt-input" placeholder="e.g. H2 · Room 316" required>
           </div>
-          <div class="form-group">
-            <label for="auth-hostel">Hostel & Room</label>
-            <input type="text" id="auth-hostel" placeholder="e.g. H5 · Room 204" required>
-          </div>
-          <button type="submit" class="btn btn-primary btn-block btn-lg">Continue to MitShop</button>
-        </form>
+          <button class="btn btn-primary btn-block btn-lg" onclick="handleHostelSave()">Save & Continue</button>
+        </div>
       </div>
     </div>
 
@@ -400,6 +398,6 @@
 
   </div>
 
-  <script src="app.js?v=6"></script>
+  <script src="app.js?v=7"></script>
 </body>
 </html>
