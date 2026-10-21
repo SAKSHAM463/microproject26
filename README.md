@@ -41,7 +41,7 @@ A lightweight, fully responsive web marketplace designed specifically for univer
    - Instant toggle with Moon/Sun icon (`🌙` / `☀️`) and clean high-contrast styling.
 
 8. **Admin Dashboard** (at `/admin.html`)
-   - Login with admin password (default: `admin123`, set via `ADMIN_PASSWORD` in `.env`).
+   - Login with admin password (default: `HIDDEN, CONTACT THE DEVELOPER `, set via `ADMIN_PASSWORD` in `.env`).
    - View all orders, mark as fulfilled or paid.
    - Auto-refreshes every 30 seconds.
 
@@ -79,7 +79,7 @@ Open your browser and navigate to:
 **[http://localhost:3000](http://localhost:3000)**
 
 **Admin panel:** [http://localhost:3000/admin.html](http://localhost:3000/admin.html)
-Password: `admin123` (or set `ADMIN_PASSWORD` in `.env`)
+Password: ( `ADMIN_PASSWORD` in `.env`)
 
 ---
 
