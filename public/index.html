@@ -12,7 +12,13 @@
   <meta name="theme-color" content="#0D0C20" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="style.css?v=6">
 </head>
-<body>
+<body class="dark-mode">
+  <script>
+    // Immediately apply saved preference before render to prevent flash
+    if (localStorage.getItem('mitshop-theme') === 'light') {
+      document.body.classList.remove('dark-mode');
+    }
+  </script>
   <div class="app-container">
 
     <!-- Top Navigation Header -->
@@ -57,8 +63,8 @@
         </div>
 
         <!-- Dark/Light Mode Toggle -->
-        <button class="icon-btn theme-toggle-btn" id="theme-btn" onclick="toggleDarkMode()" title="Toggle Dark Mode" aria-label="Toggle theme">
-          <span id="theme-icon">🌙</span>
+        <button class="icon-btn theme-toggle-btn" id="theme-btn" onclick="toggleDarkMode()" title="Toggle theme" aria-label="Toggle theme">
+          <span id="theme-icon">☀️</span>
         </button>
 
         <!-- Cart Button -->

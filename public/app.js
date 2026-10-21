@@ -159,17 +159,21 @@ function setupEventListeners() {
 // ================= THEME (DARK / LIGHT) =================
 function initTheme() {
   const saved = localStorage.getItem('mitshop-theme');
-  if (saved === 'dark') {
-    document.body.classList.add('dark-mode');
-    document.getElementById('theme-icon').textContent = '☀️';
+  const icon = document.getElementById('theme-icon');
+  // Dark mode is default unless user explicitly chose light
+  if (saved === 'light') {
+    document.body.classList.remove('dark-mode');
+    if (icon) icon.textContent = '🌙';
   } else {
-    document.getElementById('theme-icon').textContent = '🌙';
+    document.body.classList.add('dark-mode');
+    if (icon) icon.textContent = '☀️';
   }
 }
 
 function toggleDarkMode() {
   const isDark = document.body.classList.toggle('dark-mode');
-  document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+  const icon = document.getElementById('theme-icon');
+  if (icon) icon.textContent = isDark ? '☀️' : '🌙';
   localStorage.setItem('mitshop-theme', isDark ? 'dark' : 'light');
 }
 
