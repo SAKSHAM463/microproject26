@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
+  <title>MitShop - Campus Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="MitShop – campus peer-to-peer marketplace for students to buy, sell and chat about items.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F7F7F2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141A17" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="style.css?v=13">
+  <script src="https://accounts.google.com/gsi/client" async defer onload="if(window.onGoogleLibraryLoad) window.onGoogleLibraryLoad()"></script>
+</head>
+<body class="dark-mode">
+  <script>
+    // Immediately apply saved preference before render to prevent flash
+    const urlTheme = new URLSearchParams(window.location.search).get('theme');
+    if (urlTheme === 'light' || (!urlTheme && localStorage.getItem('mitshop-theme') === 'light')) {
+      document.body.classList.remove('dark-mode');
+    }
+  </script>
+  <div class="app-container">
+
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <h1 class="brand-logo" onclick="switchTab('buy')">MitShop</h1>
+      </div>
+      <div class="header-right">
+        <!-- Student Profile Menu -->
+        <div class="user-pill-dropdown" id="user-dropdown-toggle" onclick="handleProfilePillClick(event)" title="Student profile">
+          <span class="user-avatar-badge" id="header-user-avatar">?</span>
+          <span class="user-name-text" id="header-user-name">Sign in</span>
+          <span class="dropdown-chevron">▾</span>
+          <div class="user-dropdown-menu" id="user-dropdown-menu" onclick="event.stopPropagation()">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </div>
+
+        <!-- Dark/Light Mode Toggle -->
+        <button class="icon-btn theme-toggle-btn" id="theme-btn" onclick="toggleDarkMode()" title="Toggle theme" aria-label="Toggle theme">
+          <span id="theme-icon">☀️</span>
+        </button>
+
+        <!-- Cart / Deal Button -->
+        <button class="icon-btn cart-toggle-btn" id="cart-btn" onclick="openCart()" title="View Deal" aria-label="View Deal">
+          <svg class="cart-svg-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count-badge" id="cart-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Campus Notice Banner -->
+    <div class="campus-announcement-banner">
+      <span class="announcement-text">🤝 Peer-to-peer marketplace: Deals, pricing, and meetup spots are mutually decided between students.</span>
+    </div>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="nav-segmented-tabs">
+      <button class="nav-tab active" id="tab-buy" onclick="switchTab('buy')">
+        <span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span><span class="tab-label">Buy</span>
+      </button>
+      <button class="nav-tab" id="tab-sell" onclick="switchTab('sell')">
+        <span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1"/></svg></span><span class="tab-label">Sell</span>
+      </button>
+      <button class="nav-tab" id="tab-chat" onclick="switchTab('chat')">
+        <span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"/></svg></span><span class="tab-label">Chat</span>
+        <span class="chat-unread-dot" id="chat-unread-indicator"></span>
+      </button>
+      <button class="nav-tab" id="tab-orders" onclick="switchTab('orders')">
+        <span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg></span><span class="tab-label">Orders</span>
+      </button>
+    </nav>
+
+    <!-- MAIN VIEW AREA -->
+    <main class="main-content">
+
+      <!-- ================= 1. BUY FEED VIEW ================= -->
+      <section id="view-buy" class="view-panel active">
+        <!-- Search and Filter Bar -->
+        <div class="search-bar-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="catalog-search" placeholder="Search textbooks, calculators, drafters..." oninput="handleSearch(this.value)">
+          <button class="clear-search-btn" id="clear-search" onclick="clearSearch()" style="display:none">✕</button>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="category-pills-scroll" id="category-pills">
+          <button class="cat-pill active" data-cat="All" onclick="filterCategory('All')">All</button>
+          <button class="cat-pill" data-cat="Books" onclick="filterCategory('Books')">Books</button>
+          <button class="cat-pill" data-cat="Electronics" onclick="filterCategory('Electronics')">Electronics</button>
+          <button class="cat-pill" data-cat="Hostel Essentials" onclick="filterCategory('Hostel Essentials')">Hostel Essentials</button>
+          <button class="cat-pill" data-cat="Stationery" onclick="filterCategory('Stationery')">Stationery & Tools</button>
+          <button class="cat-pill" data-cat="Other" onclick="filterCategory('Other')">Other</button>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div class="catalog-grid" id="catalog-grid">
+          <!-- From Uiverse.io by KSAplay -->
+          <div class="catalog-loader-container">
+            <div class="loader">
+              <div class="loading-text">
+                Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+              </div>
+              <div class="loading-bar-background">
+                <div class="loading-bar">
+                  <div class="white-bars-container">
+                    <div class="white-bar"></div>
+                    <div class="white-bar"></div>
+                    <div class="white-bar"></div>
+                    <div class="white-bar"></div>
+                    <div class="white-bar"></div>
+                    <div class="white-bar"></div>
+                    <div class="white-bar"></div>
+                    <div class="white-bar"></div>
+                    <div class="white-bar"></div>
+                    <div class="white-bar"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-catalog" style="display:none">
+          <div class="empty-icon">🔍</div>
+          <h3>No items found</h3>
+          <p>Try searching for something else or sell the first item!</p>
+          <button class="btn btn-primary" onclick="switchTab('sell')">Post a Listing</button>
+        </div>
+      </section>
+
+      <!-- ================= 2. SELL FORM VIEW ================= -->
+      <section id="view-sell" class="view-panel">
+        <div class="sell-container">
+          <div class="sell-header">
+            <h2>Sell an item</h2>
+            <p class="sell-subtitle">Your listing shows up in Buy right away.</p>
+          </div>
+
+          <form id="sell-form" onsubmit="handleSellSubmit(event)" class="sell-form-card">
+            <div class="form-group">
+              <label for="item-name">Item name</label>
+              <input type="text" id="item-name" name="title" placeholder="e.g. Drafter kit" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-half">
+                <label for="item-category">Category</label>
+                <select id="item-category" name="category" required>
+                  <option value="" disabled selected>Select a category</option>
+                  <option value="Books">Books</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Hostel Essentials">Hostel Essentials</option>
+                  <option value="Stationery">Stationery</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group col-half">
+                <label for="item-price">Price (₹)</label>
+                <input type="number" id="item-price" name="price" placeholder="150" min="0" step="1" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-half">
+                <label for="item-condition">Condition</label>
+                <select id="item-condition" name="condition" required>
+                  <option value="Good" selected>Good</option>
+                  <option value="Like new">Like new</option>
+                  <option value="Brand new">Brand new</option>
+                  <option value="Fair">Fair</option>
+                </select>
+              </div>
+
+              <div class="form-group col-half">
+                <label for="item-hostel">Hostel and room</label>
+                <input type="text" id="item-hostel" name="hostel_room" placeholder="H7 · Room 505" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="item-phone">Mobile number</label>
+              <input type="tel" id="item-phone" name="phone" placeholder="e.g. 9876543210" pattern="[6-9][0-9]{9}" maxlength="10" autocomplete="tel" inputmode="tel">
+              <small class="helper-text">10-digit mobile number for peer-to-peer deal coordination</small>
+            </div>
+
+            <div class="form-group">
+              <label for="item-details">Details</label>
+              <textarea id="item-details" name="details" rows="3" placeholder="Edition, age, anything the buyer should know"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="item-photo">Item Photo <span style="color:var(--brand);font-weight:700;">*</span></label>
+              <input type="file" id="item-photo" name="photo" accept="image/jpeg,image/png,image/webp" class="file-input" onchange="handlePhotoSelect(event)" required>
+              <div id="photo-preview-container" style="display:none; margin-top:8px; position:relative; max-width:220px;">
+                <img id="photo-preview-img" src="" alt="Selected photo preview" style="width:100%; height:130px; object-fit:cover; border-radius:var(--r-md); border:1px solid var(--line);">
+                <button type="button" class="btn btn-outline" onclick="removeSelectedPhoto()" style="margin-top:6px; font-size:0.8rem; padding:4px 10px; min-height:32px;">✕ Remove photo</button>
+              </div>
+              <small id="photo-file-hint" style="color:var(--muted); font-size:0.78rem; display:block; margin-top:4px;">Supported: JPG, PNG, WEBP (Max 5MB) · Real item photo is required</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-listing-btn">
+              Post Listing
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ================= 3. ITEM-LINKED CHAT VIEW (OLX-STYLE) ================= -->
+      <section id="view-chat" class="view-panel">
+        <div class="chat-container-olx" id="chat-container-olx">
+
+          <!-- Left Pane: Conversations / Inbox List (OLX-Style) -->
+          <aside class="chat-inbox-sidebar" id="chat-inbox-sidebar">
+            <div class="chat-inbox-header">
+              <div class="inbox-top-row">
+                <h2 class="inbox-heading">Chats</h2>
+                <span class="inbox-badge-total" id="inbox-unread-count" style="display:none">0 unread</span>
+              </div>
+
+              <!-- From Uiverse.io by Spacious74: Curved Inverted Border-Radius Folder Tabs for BUYING / SELLING -->
+              <div class="chat-inbox-folder-tabs radio-inputs" role="tablist" aria-label="Chat folders">
+                <label class="radio">
+                  <input type="radio" name="chat-folder-radio" id="folder-tab-buying" value="buying" checked onchange="switchChatFolder('buying')" />
+                  <span class="name">
+                    <span class="folder-label">BUYING</span>
+                    <span class="folder-count-badge" id="folder-buying-count">0</span>
+                  </span>
+                </label>
+                <label class="radio">
+                  <input type="radio" name="chat-folder-radio" id="folder-tab-selling" value="selling" onchange="switchChatFolder('selling')" />
+                  <span class="name">
+                    <span class="folder-label">SELLING</span>
+                    <span class="folder-count-badge" id="folder-selling-count">0</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Thread cards container -->
+            <div class="chat-threads-container" id="chat-threads-container" role="region" aria-label="Conversation list">
+              <!-- Dynamically populated thread cards -->
+            </div>
+          </aside>
+
+          <!-- Right Pane: Active Conversation Screen -->
+          <main class="chat-main-conversation" id="chat-main-conversation">
+            <!-- Mobile back header & Counterparty Details -->
+            <div class="chat-main-header" id="chat-main-header">
+              <button class="chat-mobile-back-btn" id="chat-mobile-back-btn" onclick="backToChatInbox()" title="Back to conversations" aria-label="Back to conversations">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              </button>
+
+              <div class="chat-counterparty-profile" id="chat-counterparty-profile">
+                <div class="counterparty-avatar-circle" id="chat-counterparty-avatar">S</div>
+                <div class="counterparty-meta">
+                  <div class="counterparty-name-row">
+                    <span class="counterparty-name" id="chat-counterparty-name">Seller</span>
+                    <span class="counterparty-verified-tick" title="Verified College Student">✓</span>
+                    <span class="counterparty-role-tag" id="chat-counterparty-role">Seller</span>
+                  </div>
+                  <span class="counterparty-sub-location" id="chat-counterparty-sub">Hostel · MITS Gwalior</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pinned Item Context Bar (OLX-style item card right below header) -->
+            <div class="chat-item-context-bar" id="chat-context-banner">
+              <div class="context-bar-left">
+                <img id="chat-item-thumb" class="chat-context-img" src="" alt="Item photo" style="display:none;" />
+                <div class="context-bar-info">
+                  <div class="context-item-title" id="chat-item-title">Item Title</div>
+                  <div class="context-item-price" id="chat-item-price">₹0</div>
+                </div>
+              </div>
+              <div class="context-bar-right">
+                <span class="context-status-pill" id="chat-item-status-pill">Available</span>
+                <button class="btn btn-outline btn-xs" onclick="viewChatProduct()">View Item</button>
+              </div>
+            </div>
+
+            <!-- Mutual Handshake Unlocked Banner (Only displayed when deal is accepted!) -->
+            <div class="chat-unlocked-handshake" id="chat-unlocked-handshake" style="display:none">
+              <!-- Dynamically populated with phone, hostel, and meetup coords -->
+            </div>
+
+            <!-- Messages Stream (Bubbles + Interactive Offer Cards) -->
+            <div class="chat-messages-stream" id="chat-messages-container">
+              <!-- Populated dynamically via renderChatMessages() -->
+            </div>
+
+            <!-- Dynamic Bottom Action Area: Negotiation Box before agreement, or Unlocked Chat Bar after agreement -->
+            <div class="chat-bottom-action-area" id="chat-bottom-action-area">
+              <!-- Populated dynamically via renderChatActionArea() -->
+            </div>
+          </main>
+
+        </div>
+      </section>
+
+      <!-- ================= 4. ORDERS & TRACKING VIEW ================= -->
+      <section id="view-orders" class="view-panel">
+        <div class="orders-container">
+          <div class="orders-header">
+            <h2>Campus Orders</h2>
+            <p class="orders-subtitle">Track pickup requests and handoffs at hostel gates.</p>
+          </div>
+
+          <div class="orders-list" id="orders-list">
+            <!-- Orders dynamically rendered -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================= CART DRAWER / MODAL ================= -->
+    <div class="cart-backdrop" id="cart-drawer-backdrop" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cart-drawer">
+      <div class="cart-drawer-header">
+        <h2>Your Deal</h2>
+        <button class="close-modal-btn" onclick="closeCart()" aria-label="Close deal">✕</button>
+      </div>
+
+      <div class="cart-drawer-body">
+        <div class="cart-items-list" id="cart-items-container">
+          <!-- Items inserted here -->
+        </div>
+
+        <div class="cart-summary-section" id="cart-summary-section">
+          <div class="cart-total-row">
+            <span class="total-label">Total</span>
+            <span class="total-amount" id="cart-total-amount">₹0</span>
+          </div>
+
+          <div class="free-delivery-badge" id="free-delivery-pill" style="background:var(--sub); color:var(--text); border:1px solid var(--line);">
+            <span class="pill-dot">🤝</span> Direct Peer-to-Peer Meetup & Payment
+          </div>
+
+          <div class="checkout-input-group">
+            <label for="checkout-hostel-room">Hostel and room</label>
+            <input type="text" id="checkout-hostel-room" placeholder="e.g. H7 · Room 505" required>
+          </div>
+
+          <div class="checkout-input-group">
+            <label for="checkout-pickup-gate">Meetup / Gate Pickup Location</label>
+            <select id="checkout-pickup-gate">
+              <option value="Hostel Gate 7 (Boys)" selected>Hostel Gate 7 (Boys)</option>
+              <option value="Girls Hostel Gate (H-4, H-5, H-6)">Girls Hostel Gate (H-4, H-5, H-6)</option>
+              <option value="Statue Garden">Statue Garden</option>
+              <option value="Jublee Gate (near AI building)">Jublee Gate (near AI building)</option>
+              <option value="College Cafeteria Gate">College Cafeteria Gate</option>
+            </select>
+          </div>
+
+          <div class="checkout-input-group">
+            <label>Payment Method</label>
+            <div class="payment-method-selector">
+              <label class="payment-radio" id="pay-radio-cash">
+                <input type="radio" name="payment_method" value="Cash" checked onchange="handlePaymentMethodChange()">
+                <span>💵 Cash on Meetup</span>
+              </label>
+              <label class="payment-radio" id="pay-radio-upi">
+                <input type="radio" name="payment_method" value="UPI" onchange="handlePaymentMethodChange()">
+                <span>📱 UPI / QR</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-block btn-lg place-order-btn" id="drawer-action-btn" onclick="handleDrawerAction()">
+            Confirm Deal
+          </button>
+        </div>
+
+        <div class="empty-cart-state" id="empty-cart-view" style="display:none">
+          <div class="empty-icon">🤝</div>
+          <p>Your deal is empty.</p>
+          <button class="btn btn-primary" onclick="closeCart(); switchTab('buy');">Browse Items</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================= UPI / QR CHECKOUT MODAL ================= -->
+    <div class="modal-backdrop" id="upi-checkout-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="upi-checkout-title">
+      <div class="modal-card checkout-modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header checkout-modal-header">
+          <div class="checkout-header-title-wrap">
+            <h3 id="upi-checkout-title">Secure UPI Checkout</h3>
+            <span class="razorpay-badge">
+              <svg class="rzp-bolt-icon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+              Powered by Razorpay
+            </span>
+          </div>
+          <button class="close-modal-btn" onclick="closeUpiCheckoutModal()" aria-label="Close checkout">✕</button>
+        </div>
+
+        <div class="checkout-modal-body" id="upi-checkout-content">
+          <!-- Dynamic checkout content rendered here -->
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================= 1. AUTH / LOGIN MODAL ================= -->
+    <div class="modal-backdrop" id="auth-modal" style="display:none" onclick="closeLoginModal()" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        
+        <!-- Step 1: Email Entry -->
+        <div id="auth-step-email">
+          <div class="modal-card-header">
+            <h3 id="auth-modal-title">College Campus Sign-In</h3>
+            <button class="close-modal-btn" onclick="closeLoginModal()" aria-label="Close">✕</button>
+          </div>
+          <div class="auth-modal-content">
+            <p class="auth-desc-text">
+              Sign in with your verified institutional email. Passwordless access via <span id="google-auth-desc-mention" style="display: none;">Google or </span>a single-use 6-digit code.
+            </p>
+
+            <!-- ========================================================================= -->
+            <!-- GOOGLE SIGN-IN METHOD (HIDDEN)                                            -->
+            <!-- To unhide/re-enable in the future: remove style="display: none;" from:   -->
+            <!-- 1. #google-auth-method-section                                            -->
+            <!-- 2. #google-auth-desc-mention                                              -->
+            <!-- ========================================================================= -->
+            <div id="google-auth-method-section" style="display: none;">
+              <!-- Google Identity Services Container -->
+              <div class="google-auth-wrapper" style="margin-bottom: 14px; text-align: center;">
+                <div id="google-signin-btn" style="display:flex; justify-content:center; min-height:44px;"></div>
+                <div id="google-auth-status" class="google-status-text" style="color:var(--muted); font-size:0.8rem; margin-top:4px;"></div>
+              </div>
+
+              <div class="auth-divider" style="display:flex; align-items:center; margin:14px 0; color:var(--muted); font-size:0.82rem;">
+                <span style="flex:1; height:1px; background:var(--line);"></span>
+                <span style="padding:0 12px; font-weight:600; letter-spacing:0.5px;">OR USE EMAIL OTP</span>
+                <span style="flex:1; height:1px; background:var(--line);"></span>
+              </div>
+            </div>
+
+            <div class="auth-notice-box">
+              <span class="notice-icon">ℹ️</span>
+              <small>Email verification confirms access to your institutional inbox, not current student enrollment.</small>
+            </div>
+
+            <form id="auth-email-form" onsubmit="handleRequestCodeSubmit(event)">
+              <div class="form-group" style="margin-top:14px;">
+                <label for="auth-email-input">College Email Address (@mitsgwl.ac.in)</label>
+                <input
+                  type="email"
+                  id="auth-email-input"
+                  name="email"
+                  autocomplete="username"
+                  spellcheck="false"
+                  placeholder="e.g. 26cb1sa58@mitsgwl.ac.in"
+                  pattern="^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.)?mitsgwl\.ac\.in$"
+                  title="Only @mitsgwl.ac.in email addresses are allowed"
+                  required
+                />
+                <small style="color:var(--muted);font-size:0.78rem;display:block;margin-top:5px;">
+                  🔒 Only official <strong>@mitsgwl.ac.in</strong> email IDs are accepted.
+                </small>
+              </div>
+
+              <div id="auth-campus-hint" class="campus-hint-text">
+                Approved campus: <strong id="current-campus-display">MITS Gwalior (@mitsgwl.ac.in)</strong>
+              </div>
+
+              <div style="margin-top:8px; font-size:0.82rem; text-align:center;">
+                <span style="color:var(--muted)">Not from MITS Gwalior?</span>
+                <button type="button" class="text-link-btn" onclick="openCampusRequestModal(event)">Request your college campus</button>
+              </div>
+
+              <div id="auth-request-error" class="error-msg" style="display:none;margin-top:10px;"></div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-request-code" style="margin-top:16px;">
+                Send 6-Digit Code
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Step 2: Code Verification -->
+        <div id="auth-step-code" style="display:none;">
+          <div class="modal-card-header">
+            <h3>Enter Verification Code</h3>
+            <button class="close-modal-btn" onclick="closeLoginModal()" aria-label="Close">✕</button>
+          </div>
+          <div class="auth-modal-content">
+            <p class="auth-desc-text">
+              We sent a 6-digit code to <strong id="auth-target-email"></strong>
+            </p>
+            <div style="margin-bottom:14px;">
+              <button class="text-link-btn" onclick="backToEmailStep()">Wrong email? Change address</button>
+            </div>
+
+            <form id="auth-code-form" onsubmit="handleVerifyCodeSubmit(event)">
+              <div class="form-group">
+                <label for="auth-code-input">6-Digit Verification Code</label>
+                <input
+                  type="text"
+                  id="auth-code-input"
+                  name="code"
+                  inputmode="numeric"
+                  autocomplete="one-time-code"
+                  maxlength="6"
+                  pattern="[0-9]{6}"
+                  placeholder="123456"
+                  style="font-size:1.6rem;letter-spacing:6px;text-align:center;font-weight:700;"
+                  required
+                />
+              </div>
+
+              <div id="auth-verify-error" class="error-msg" style="display:none;margin-top:10px;"></div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-verify-code" style="margin-top:16px;">
+                Verify & Sign In
+              </button>
+            </form>
+
+            <div style="text-align:center;margin-top:14px;font-size:0.88rem;">
+              <span id="resend-cooldown-text">Resend available in <strong id="resend-countdown">60</strong>s</span>
+              <button id="resend-btn" class="text-link-btn" style="display:none;" onclick="handleResendCode()">
+                Resend Verification Code
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ================= 2. ONBOARDING & TERMS MODAL ================= -->
+    <div class="modal-backdrop" id="onboarding-modal" style="display:none" onclick="closeOnboardingModal()" role="dialog" aria-modal="true" aria-labelledby="onboarding-modal-title">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3 id="onboarding-modal-title">Complete Campus Profile</h3>
+          <button class="close-modal-btn" onclick="closeOnboardingModal()" aria-label="Close">✕</button>
+        </div>
+        <div class="auth-modal-content">
+          <p class="auth-desc-text">
+            Welcome to MitShop! Please enter your real student name, hostel room, and 10-digit mobile number for secure peer-to-peer deal coordination.
+          </p>
+
+          <form id="onboarding-form" onsubmit="handleOnboardingSubmit(event)">
+            <div class="form-group">
+              <label for="onboarding-name">Full Student Name (not roll number code)</label>
+              <input type="text" id="onboarding-name" name="name" placeholder="e.g. Saksham Gupta" required autocomplete="name" />
+            </div>
+
+            <div class="form-group">
+              <label for="onboarding-phone">10-Digit Mobile Number (Kept private until deal agreed)</label>
+              <input type="tel" id="onboarding-phone" name="phone" placeholder="e.g. 9876543210" pattern="[6-9][0-9]{9}" maxlength="10" required />
+            </div>
+
+            <div class="form-group">
+              <label>Campus Residence Status</label>
+              <div class="residence-type-selector" style="display:flex;gap:16px;margin:6px 0 10px 0;">
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;font-size:0.9rem;">
+                  <input type="radio" name="onboarding_residence_type" value="hosteller" checked onchange="toggleOnboardingResidence(this.value)">
+                  <span>Hosteller</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;font-size:0.9rem;">
+                  <input type="radio" name="onboarding_residence_type" value="non_hosteller" onchange="toggleOnboardingResidence(this.value)">
+                  <span>Non-Hosteller (Day Scholar)</span>
+                </label>
+              </div>
+
+              <!-- Hosteller Selectors (Hostel block & Room number) -->
+              <div id="onboarding-hosteller-fields" class="hosteller-fields-row">
+                <div style="flex:1;">
+                  <label for="onboarding-hostel-block" style="font-size:0.8rem;color:var(--muted);display:block;margin-bottom:4px;">Hostel Block</label>
+                  <select id="onboarding-hostel-block" class="form-select" style="width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:var(--r-md);background:var(--sub);color:var(--text);font-weight:600;">
+                    <option value="H-7" selected>H-7 (Boys Hostel)</option>
+                    <option value="H-4">H-4 (Girls Hostel)</option>
+                    <option value="H-5">H-5 (Girls Hostel)</option>
+                    <option value="H-6">H-6 (Girls Hostel)</option>
+                  </select>
+                </div>
+                <div style="flex:1;">
+                  <label for="onboarding-room-input" style="font-size:0.8rem;color:var(--muted);display:block;margin-bottom:4px;">Room Number</label>
+                  <input type="text" id="onboarding-room-input" list="campus-rooms-list" placeholder="Select or type (e.g. 103)" autocomplete="off" style="width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:var(--r-md);background:var(--sub);color:var(--text);font-weight:600;">
+                </div>
+              </div>
+
+              <!-- Non-Hosteller Field -->
+              <div id="onboarding-non-hosteller-fields" style="display:none;margin-top:6px;">
+                <label for="onboarding-city-address" style="font-size:0.8rem;color:var(--muted);display:block;margin-bottom:4px;">City / Residential Address</label>
+                <input type="text" id="onboarding-city-address" placeholder="e.g. Thatipur, Gwalior" style="width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:var(--r-md);background:var(--sub);color:var(--text);">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:16px;">
+              <label class="terms-checkbox-label">
+                <input type="checkbox" id="onboarding-terms" required />
+                <span>I accept the <strong>Campus Marketplace Terms of Service</strong> and agree to adhere to campus honor policies.</span>
+              </label>
+            </div>
+
+            <div class="auth-notice-box" style="margin-top:14px;">
+              <small>🔒 Your contact number is strictly protected under DPDP guidelines and is only unlocked for a counterparty once an offer is mutually accepted.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:16px;">
+              Complete Profile & Enter
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Room Numbers Datalist for Floors 1 to 7 -->
+    <datalist id="campus-rooms-list">
+      <option value="101">101 (Floor 1)</option><option value="102">102</option><option value="103">103</option><option value="104">104</option><option value="105">105</option><option value="106">106</option><option value="107">107</option><option value="108">108</option><option value="109">109</option><option value="110">110</option><option value="111">111</option><option value="112">112</option><option value="113">113</option><option value="114">114</option><option value="115">115</option>
+      <option value="201">201 (Floor 2)</option><option value="202">202</option><option value="203">203</option><option value="204">204</option><option value="205">205</option><option value="206">206</option><option value="207">207</option><option value="208">208</option><option value="209">209</option><option value="210">210</option><option value="211">211</option><option value="212">212</option><option value="213">213</option><option value="214">214</option><option value="215">215</option>
+      <option value="301">301 (Floor 3)</option><option value="302">302</option><option value="303">303</option><option value="304">304</option><option value="305">305</option><option value="306">306</option><option value="307">307</option><option value="308">308</option><option value="309">309</option><option value="310">310</option><option value="311">311</option><option value="312">312</option><option value="313">313</option><option value="314">314</option><option value="315">315</option>
+      <option value="401">401 (Floor 4)</option><option value="402">402</option><option value="403">403</option><option value="404">404</option><option value="405">405</option><option value="406">406</option><option value="407">407</option><option value="408">408</option><option value="409">409</option><option value="410">410</option><option value="411">411</option><option value="412">412</option><option value="413">413</option><option value="414">414</option><option value="415">415</option>
+      <option value="501">501 (Floor 5)</option><option value="502">502</option><option value="503">503</option><option value="504">504</option><option value="505">505</option><option value="506">506</option><option value="507">507</option><option value="508">508</option><option value="509">509</option><option value="510">510</option><option value="511">511</option><option value="512">512</option><option value="513">513</option><option value="514">514</option><option value="515">515</option>
+      <option value="601">601 (Floor 6)</option><option value="602">602</option><option value="603">603</option><option value="604">604</option><option value="605">605</option><option value="606">606</option><option value="607">607</option><option value="608">608</option><option value="609">609</option><option value="610">610</option><option value="611">611</option><option value="612">612</option><option value="613">613</option><option value="614">614</option><option value="615">615</option>
+      <option value="701">701 (Floor 7)</option><option value="702">702</option><option value="703">703</option><option value="704">704</option><option value="705">705</option><option value="706">706</option><option value="707">707</option><option value="708">708</option><option value="709">709</option><option value="710">710</option><option value="711">711</option><option value="712">712</option><option value="713">713</option><option value="714">714</option><option value="715">715</option>
+    </datalist>
+
+    <!-- ================= 2B. EDIT ADDRESS MODAL ================= -->
+    <div class="modal-backdrop" id="edit-address-modal" style="display:none" onclick="closeEditAddressModal()" role="dialog" aria-modal="true" aria-labelledby="edit-address-modal-title">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3 id="edit-address-modal-title">Edit Campus Address</h3>
+          <button class="close-modal-btn" onclick="closeEditAddressModal()" aria-label="Close">✕</button>
+        </div>
+        <div class="auth-modal-content">
+          <p class="auth-desc-text" style="margin-bottom:12px;">
+            Update your campus hostel room or residential address. Student name and institutional email are verified and cannot be changed.
+          </p>
+
+          <form id="edit-address-form" onsubmit="handleEditAddressSubmit(event)">
+            <div class="form-group">
+              <label>Campus Residence Status</label>
+              <div class="residence-type-selector" style="display:flex;gap:16px;margin:6px 0 10px 0;">
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;font-size:0.9rem;">
+                  <input type="radio" name="edit_residence_type" id="edit-type-hosteller" value="hosteller" checked onchange="toggleEditAddressResidence(this.value)">
+                  <span>Hosteller</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;font-size:0.9rem;">
+                  <input type="radio" name="edit_residence_type" id="edit-type-non-hosteller" value="non_hosteller" onchange="toggleEditAddressResidence(this.value)">
+                  <span>Non-Hosteller (Day Scholar)</span>
+                </label>
+              </div>
+
+              <!-- Hosteller Selectors (Hostel block & Room number) -->
+              <div id="edit-hosteller-fields" class="hosteller-fields-row">
+                <div style="flex:1;">
+                  <label for="edit-hostel-block" style="font-size:0.8rem;color:var(--muted);display:block;margin-bottom:4px;">Hostel Block</label>
+                  <select id="edit-hostel-block" class="form-select" style="width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:var(--r-md);background:var(--sub);color:var(--text);font-weight:600;">
+                    <option value="H-7">H-7 (Boys Hostel)</option>
+                    <option value="H-4">H-4 (Girls Hostel)</option>
+                    <option value="H-5">H-5 (Girls Hostel)</option>
+                    <option value="H-6">H-6 (Girls Hostel)</option>
+                  </select>
+                </div>
+                <div style="flex:1;">
+                  <label for="edit-room-input" style="font-size:0.8rem;color:var(--muted);display:block;margin-bottom:4px;">Room Number</label>
+                  <input type="text" id="edit-room-input" list="campus-rooms-list" placeholder="Select or type (e.g. 103)" autocomplete="off" style="width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:var(--r-md);background:var(--sub);color:var(--text);font-weight:600;">
+                </div>
+              </div>
+
+              <!-- Non-Hosteller Field -->
+              <div id="edit-non-hosteller-fields" style="display:none;margin-top:6px;">
+                <label for="edit-city-address" style="font-size:0.8rem;color:var(--muted);display:block;margin-bottom:4px;">City / Residential Address</label>
+                <input type="text" id="edit-city-address" placeholder="e.g. Thatipur, Gwalior" style="width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:var(--r-md);background:var(--sub);color:var(--text);">
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:16px;">
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-edit-address-btn">
+                Save Address
+              </button>
+              <button type="button" class="btn btn-outline btn-block btn-lg" onclick="closeEditAddressModal()">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================= 3. CAMPUS REQUEST MODAL ================= -->
+    <div class="modal-backdrop" id="campus-request-modal" style="display:none" onclick="closeCampusRequestModal()" role="dialog" aria-modal="true" aria-labelledby="campus-request-title">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3 id="campus-request-title">Request Your Campus</h3>
+          <button class="close-modal-btn" onclick="closeCampusRequestModal()" aria-label="Close">✕</button>
+        </div>
+        <div class="auth-modal-content">
+          <p class="auth-desc-text">
+            Don't see your college? Submit a review request. Submitting a request does not automatically approve access; administrators review institutional credentials.
+          </p>
+
+          <form id="campus-request-form" onsubmit="handleCampusRequestSubmit(event)">
+            <div class="form-group">
+              <label for="req-campus-name">Institution / College Name</label>
+              <input type="text" id="req-campus-name" placeholder="e.g. Stanford University" required />
+            </div>
+
+            <div class="form-group">
+              <label for="req-campus-domain">Institutional Domain</label>
+              <input type="text" id="req-campus-domain" placeholder="e.g. stanford.edu" required />
+            </div>
+
+            <div class="form-group">
+              <label for="req-contact-email">Your College Email Address</label>
+              <input type="email" id="req-contact-email" placeholder="e.g. student@stanford.edu" required />
+            </div>
+
+            <div class="form-group">
+              <label for="req-notes">Additional Notes (Optional)</label>
+              <textarea id="req-notes" rows="2" placeholder="Student council contact or details..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:16px;">
+              Submit Request
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================= 4. EMAIL CHANGE MODAL ================= -->
+    <div class="modal-backdrop" id="email-change-modal" style="display:none" onclick="closeEmailChangeModal()" role="dialog" aria-modal="true" aria-labelledby="email-change-title">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3 id="email-change-title">Change College Email</h3>
+          <button class="close-modal-btn" onclick="closeEmailChangeModal()" aria-label="Close">✕</button>
+        </div>
+        <div class="auth-modal-content">
+          <div id="email-change-step-1">
+            <p class="auth-desc-text">
+              Update the college email for your account. The new email must belong to your approved campus. Verification codes will be sent to both addresses.
+            </p>
+            <form id="email-change-form" onsubmit="handleEmailChangeRequest(event)">
+              <div class="form-group">
+                <label for="email-change-new-input">New College Email</label>
+                <input type="email" id="email-change-new-input" required placeholder="new@mitsgwl.ac.in" />
+              </div>
+              <div id="email-change-req-error" class="error-msg" style="display:none;margin-top:10px;"></div>
+              <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:16px;">
+                Send Dual Verification Codes
+              </button>
+            </form>
+          </div>
+
+          <div id="email-change-step-2" style="display:none;">
+            <p class="auth-desc-text">
+              Enter the 6-digit codes sent to your current email and new email.
+            </p>
+            <form id="email-change-verify-form" onsubmit="handleEmailChangeVerify(event)">
+              <div class="form-group">
+                <label for="email-change-old-code">Code sent to Current Email</label>
+                <input type="text" id="email-change-old-code" inputmode="numeric" maxlength="6" placeholder="123456" required />
+              </div>
+              <div class="form-group" style="margin-top:10px;">
+                <label for="email-change-new-code">Code sent to New Email</label>
+                <input type="text" id="email-change-new-code" inputmode="numeric" maxlength="6" placeholder="654321" required />
+              </div>
+              <div id="email-change-verify-error" class="error-msg" style="display:none;margin-top:10px;"></div>
+              <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:16px;">
+                Confirm Email Change
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================= 5. ITEM DETAILS MODAL ================= -->
+    <div class="modal-backdrop" id="item-details-modal" style="display:none" onclick="closeItemDetailsModal()" role="dialog" aria-modal="true" aria-labelledby="item-modal-title">
+      <div class="modal-card item-modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3 id="item-modal-title">Item Details</h3>
+          <button class="close-modal-btn" onclick="closeItemDetailsModal()" aria-label="Close">✕</button>
+        </div>
+        <div class="auth-modal-content" id="item-modal-content">
+          <!-- Populated dynamically via openItemDetails() in app.js -->
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================= 6. CANCEL DEAL & STRIKE WARNING MODAL ================= -->
+    <div class="modal-backdrop" id="cancel-deal-modal" style="display:none" onclick="closeCancelDealModal()" role="dialog" aria-modal="true">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3 style="color:var(--danger)">⚠️ Cancel Agreed Deal</h3>
+          <button class="close-modal-btn" onclick="closeCancelDealModal()">✕</button>
+        </div>
+        <div class="auth-modal-content">
+          <div class="alert-box-warning" style="background:var(--warn-bg);border:1px solid var(--warn);padding:12px;border-radius:var(--r-md);margin-bottom:14px;font-size:0.88rem;color:#7A4300">
+            <strong>Campus Accountability Notice:</strong> Canceling an agreed deal disrupts trust. MitShop enforces a strict <strong>2-strike policy</strong>: your 2nd deal cancellation in a semester will permanently ban your student account.
+          </div>
+
+          <form id="cancel-deal-form" onsubmit="submitCancelDeal(event)">
+            <input type="hidden" id="cancel-deal-id" />
+            <div class="form-group">
+              <label for="cancel-deal-reason">Reason for Cancellation</label>
+              <select id="cancel-deal-reason" required style="width:100%;padding:10px;border-radius:var(--r-md);border:1.5px solid var(--line);background:var(--surface);color:var(--text);font-size:0.9rem">
+                <option value="Student did not show up at meetup spot">Student did not show up at meetup spot</option>
+                <option value="Item condition did not match description">Item condition did not match description</option>
+                <option value="Found alternative / No longer needed">Found alternative / No longer needed</option>
+                <option value="Price disagreement during meetup">Price disagreement during meetup</option>
+                <option value="Mutual cancellation by agreement">Mutual cancellation by agreement</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-top:10px;">
+              <label for="cancel-deal-notes">Additional Details (Optional)</label>
+              <textarea id="cancel-deal-notes" rows="2" placeholder="Brief note explaining why deal could not be completed..." style="width:100%;padding:10px;border-radius:var(--r-md);border:1.5px solid var(--line);background:var(--surface);color:var(--text);font-size:0.88rem"></textarea>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:16px;">
+              <button type="button" class="btn btn-outline" style="flex:1" onclick="closeCancelDealModal()">Keep Deal</button>
+              <button type="submit" class="btn btn-danger" style="flex:1;background:var(--danger);color:#fff">Confirm & Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================= 7. SELLER RELIST PERMISSION MODAL ================= -->
+    <div class="modal-backdrop" id="relist-deal-modal" style="display:none" onclick="closeRelistDealModal()" role="dialog" aria-modal="true">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3>📦 Relist Item on Marketplace?</h3>
+          <button class="close-modal-btn" onclick="closeRelistDealModal()">✕</button>
+        </div>
+        <div class="auth-modal-content">
+          <p id="relist-deal-text" style="font-size:0.92rem;color:var(--text);margin-bottom:16px;">
+            The buyer has cancelled this deal. Would you like to relist this item as <strong>Available</strong> so other campus students can discover and buy it?
+          </p>
+          <div style="display:flex;gap:10px;">
+            <button type="button" class="btn btn-outline" style="flex:1" onclick="closeRelistDealModal()">Keep Reserved/Unlisted</button>
+            <button type="button" class="btn btn-primary" style="flex:1" onclick="confirmRelistItem()">Yes, Relist as Available</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================= 8. SELLER CONTROLS MODAL ================= -->
+    <div class="modal-backdrop" id="seller-controls-modal" style="display:none" onclick="closeSellerControlsModal()" role="dialog" aria-modal="true" aria-labelledby="seller-controls-title">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-card-header">
+          <h3 id="seller-controls-title">⚙️ Seller Controls</h3>
+          <button class="close-modal-btn" onclick="closeSellerControlsModal()" aria-label="Close">✕</button>
+        </div>
+        <div class="auth-modal-content" id="seller-controls-content">
+          <div id="seller-controls-preview" style="background:var(--sub); border:1px solid var(--line); border-radius:var(--r-md); padding:12px; margin-bottom:16px;">
+            <!-- Populated dynamically -->
+          </div>
+
+          <div class="form-group" style="margin-bottom:14px;">
+            <label style="font-size:0.85rem; font-weight:700; color:var(--text); margin-bottom:6px; display:block;">Listing Status</label>
+            <div class="status-btn-group">
+              <button type="button" class="status-toggle-btn" id="status-btn-available" onclick="setSellerItemStatus('Available')">Available</button>
+              <button type="button" class="status-toggle-btn" id="status-btn-reserved" onclick="setSellerItemStatus('Reserved')">Reserved</button>
+              <button type="button" class="status-toggle-btn" id="status-btn-sold" onclick="setSellerItemStatus('Sold')">Sold</button>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:14px;">
+            <label for="seller-edit-price" style="font-size:0.85rem; font-weight:700; color:var(--text); margin-bottom:6px; display:block;">Price (₹)</label>
+            <input type="number" id="seller-edit-price" min="0" step="1" required class="form-input" style="width:100%; padding:10px; border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface); color:var(--text); font-weight:700; box-sizing:border-box;">
+          </div>
+
+          <div class="form-group" style="margin-bottom:16px;">
+            <label for="seller-edit-details" style="font-size:0.85rem; font-weight:700; color:var(--text); margin-bottom:6px; display:block;">Description & Notes</label>
+            <textarea id="seller-edit-details" rows="3" class="form-input" style="width:100%; padding:10px; border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface); color:var(--text); box-sizing:border-box;"></textarea>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-bottom:14px;">
+            <button type="button" class="btn btn-primary" id="seller-save-btn" style="flex:1;" onclick="saveSellerItemChanges()">Save Changes</button>
+          </div>
+
+          <hr style="border:none; border-top:1px solid var(--line); margin:18px 0;">
+
+          <div>
+            <button type="button" class="btn btn-danger btn-block" style="width:100%; background:var(--bad); color:#fff; border:none; padding:10px; border-radius:var(--r-md); font-weight:700; cursor:pointer;" onclick="deleteSellerItem()">
+              🗑️ Delete Listing
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Toast Notification Popup -->
+    <div class="toast-popup" id="toast-popup" role="status" aria-live="polite"></div>
+
+  </div>
+
+  <script src="app.js?v=13"></script>
+</body>
+</html>
